@@ -6,6 +6,33 @@ Class {
 }
 
 { #category : 'tests' }
+MyPawnTest >> testEnPassantCaptureSuccessful [ 
+    | pawn opponentPawn board targetSquare |
+    
+    board := MyChessBoard empty.
+    pawn := MyPawn white.
+    opponentPawn := MyPawn black.
+    
+    "Placez le pion noir sur la case e4"
+    board at: 'f7' put: opponentPawn.
+    
+    "Le pion blanc doit se trouver en e5 pour capturer en passant"
+    board at: 'e5' put: pawn.
+
+    "Déplacez le pion noir de f7 à f5"
+    opponentPawn moveTo: (board at: 'f5').
+
+    "Simulez la capture en passant"
+    targetSquare := 'f6'.
+    pawn moveTo: (board at: targetSquare).
+
+    "Vérifiez que le pion noir est capturé"
+    self assert: ((board at: 'f6') contents = pawn).
+
+    self assert: ((board at: 'e5') contents isNil).
+]
+
+{ #category : 'tests' }
 MyPawnTest >> testId [ 
 
 	self assert: MyPawn new id equals: 'P'
