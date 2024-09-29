@@ -6,6 +6,26 @@ Class {
 }
 
 { #category : 'tests' }
+MyPawnTest >> testPawnCaptureMove [ 
+    | pawn capturedPawn board |
+    board := MyChessBoard empty.
+    board at: 'e4' put: (pawn := MyPawn white).
+    board at: 'd5' put: (capturedPawn := MyPawn black).  "Pièce adverse sur la case diagonale"
+    
+    "Simuler la capture"
+    pawn moveTo: (board at: 'd5').  "Déplacer le pion blanc vers 'd5'"
+    
+    "Vérifier que 'e4' est vide après le déplacement"
+    self assert: ((board at: 'e4') contents isNil).
+
+    "Vérifier que le pion blanc est bien à 'd5' après la capture"
+    self assert: ((board at: 'd5') contents = pawn).
+
+    "Vérifier que l'ancienne pièce noire a été capturée"
+    self assert: ((board at: 'd5') contents ~~ capturedPawn).
+]
+
+{ #category : 'tests' }
 MyPawnTest >> testPawnInitialDoubleMove [ 
     | pawn squares board |  "Déclare les variables"
 
