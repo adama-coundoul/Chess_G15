@@ -6,6 +6,27 @@ Class {
 }
 
 { #category : 'tests' }
+MyPawnTest >> testPawnMoveWithOponentObstacle [ 
+    | pawn squares board |
+    board := MyChessBoard empty.
+    board at: 'e4' put: (pawn := MyPawn white).
+
+    "Place un pion noir à e5 pour bloquer l'avancée"
+    board at: 'e5' put: MyPawn black.
+
+    squares := pawn targetSquares.
+
+    "Affiche les cases cibles pour débogage"
+
+
+    "Vérifie que le pion ne peut pas avancer vers e5 (car bloqué)"
+    self assertCollection: squares 
+        includesAll: 
+            (#( e5 ) collect: [ :name | 
+                board at: name ]).
+]
+
+{ #category : 'tests' }
 MyPawnTest >> testSimplePawnMove [ 
     | pawn squares board |  "Déclare les variables"
 
