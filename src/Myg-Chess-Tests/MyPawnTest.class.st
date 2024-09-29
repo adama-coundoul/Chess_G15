@@ -6,6 +6,23 @@ Class {
 }
 
 { #category : 'tests' }
+MyPawnTest >> testPawnInitialDoubleMove [ 
+    | pawn squares board |  "Déclare les variables"
+
+    board := MyChessBoard empty.  "Crée un échiquier vide"
+
+    board at: 'e2' put: (pawn := MyPawn white).  "Place un pion blanc à 'e2'"
+
+    squares := pawn targetSquares.  "Récupère les cases cibles du pion"
+
+    "Vérifie que le pion peut se déplacer vers 'e3' et 'e4'"
+    self assertCollection: squares 
+        includesAll: 
+            (#( e3 e4) collect: [ :name | 
+                board at: name ]).
+]
+
+{ #category : 'tests' }
 MyPawnTest >> testPawnMoveWithOponentObstacle [ 
     | pawn squares board |
     board := MyChessBoard empty.
