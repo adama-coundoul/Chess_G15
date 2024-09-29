@@ -6,6 +6,12 @@ Class {
 }
 
 { #category : 'tests' }
+MyPawnTest >> testId [ 
+
+	self assert: MyPawn new id equals: 'P'
+]
+
+{ #category : 'tests' }
 MyPawnTest >> testPawnCaptureMove [ 
     | pawn capturedPawn board |
     board := MyChessBoard empty.
