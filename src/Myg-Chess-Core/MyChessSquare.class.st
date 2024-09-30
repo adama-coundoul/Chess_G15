@@ -198,11 +198,6 @@ MyChessSquare >> printOn: aStream [
 		print: name
 ]
 
-{ #category : 'accessing' }
-MyChessSquare >> rank [ 
- ^ name second asInteger 
-]
-
 { #category : 'rendering' }
 MyChessSquare >> renderBishop: aPiece [
 
@@ -314,10 +309,4 @@ MyChessSquare >> unselect [
 MyChessSquare >> up [
 	
 	^ self + (0@1)
-]
-
-{ #category : 'instance creation' }
-MyChessSquare >> up2 [
-	
-	^ self + (0@2)
 ]
