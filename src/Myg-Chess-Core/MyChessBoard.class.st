@@ -85,6 +85,11 @@ MyChessBoard >> game: aGame [
 	game := aGame
 ]
 
+{ #category : 'initialization' }
+MyChessBoard >> grid [
+    ^ grid
+]
+
 { #category : 'highlighting' }
 MyChessBoard >> highLightTargets: squares [
 
@@ -187,34 +192,31 @@ MyChessBoard >> initializePieces [
 
 { #category : 'initialization' }
 MyChessBoard >> initializeSquares [
+    | black squareNotation square |
+    black := false.
 
-	| black |
-	black := false.
-	$a asciiValue to: $h asciiValue do: [ :column |
-		8 to: 1 by: -1 do: [ :file |
-			| squareNotation square |
-			squareNotation := column asCharacter asString , file asString.
-			square := black
-				          ifTrue: [
-					          black := false.
-					          MyChessSquare basicNew
-						          color: Color black;
-						          board: self;
-						          initialize;
-						          contents: nil;
-						          yourself ]
-				          ifFalse: [
-					          black := true.
-					          MyChessSquare basicNew
-						          color: Color white;
-						          board: self;
-						          initialize;
-						          contents: nil;
-						          yourself ].
-			square name: squareNotation.
-			grid at: squareNotation put: square.
-			self addChild: square ].
-		black := black not ]
+    $a asciiValue to: $h asciiValue do: [ :column |
+        8 to: 1 by: -1 do: [ :file |
+            "Créer la notation de la case"
+            squareNotation := column asCharacter asString , file asString.
+
+            "Créer une nouvelle case"
+            square := MyChessSquare new. "Utilisez new au lieu de basicNew pour invoquer le bon constructeur"
+            square color: (black ifTrue: [ Color black ] ifFalse: [ Color white ]).
+            square board: self.  "Associer le plateau à la case"
+            square initialize.  "Appeler la méthode d'initialisation"
+            square contents: nil.  "Initialiser le contenu à nil"
+
+            "Définir le nom de la case et l'ajouter au tableau"
+            square name: squareNotation.
+            grid at: squareNotation put: square.  "Ajouter la case à la grille"
+            self addChild: square.  "Ajouter la case au plateau"
+
+            "Alternance des couleurs pour les cases"
+            black := black not.
+        ].
+    ].
+
 ]
 
 { #category : 'accessing' }

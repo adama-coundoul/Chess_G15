@@ -59,20 +59,26 @@ MyPawnTest >> testPawnCaptureMove [
 ]
 
 { #category : 'tests' }
-MyPawnTest >> testPawnInitialDoubleMove [ 
-    | pawn squares board |  "Déclare les variables"
+MyPawnTest >> testPawnInitialDoubleMove [
+    | pawn squares board |
+    board := MyChessBoard empty.           "Crée un échiquier vide"
+    board initializeSquares.                "Initialise les cases sur le plateau"
+    
+    pawn := MyPawn white.                   "Crée un pion blanc"
+    board at: 'e2' put: pawn.               "Place le pion blanc à 'e2'"
+    
+    "Récupère les cases cibles du pion"
+    squares := pawn targetSquaresLegal: true.
+    
+    "Affiche les cases cibles pour débogage"
+    Transcript show: 'Cases cibles : ', squares asString; cr.
+    
 
-    board := MyChessBoard empty.  "Crée un échiquier vide"
-
-    board at: 'e2' put: (pawn := MyPawn white).  "Place un pion blanc à 'e2'"
-
-    squares := pawn targetSquares.  "Récupère les cases cibles du pion"
-
+    
     "Vérifie que le pion peut se déplacer vers 'e3' et 'e4'"
     self assertCollection: squares 
-        includesAll: 
-            (#( e3 e4) collect: [ :name | 
-                board at: name ]).
+        includesAll: (#(e3 e4) collect: [ :name | board at: name ]).
+
 ]
 
 { #category : 'tests' }
