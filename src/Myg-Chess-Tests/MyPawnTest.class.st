@@ -112,3 +112,15 @@ MyPawnTest >> testSimplePawnMove [
             (#( e5) collect: [ :name | 
                 board at: name ]).
 ]
+
+{ #category : 'tests' }
+MyPawnTest >> testSimplePawnPromotion [
+
+| pawn board |
+	board := MyChessBoard empty.
+	board at: 'd7' put: (pawn := MyPawn white).
+	
+
+	pawn moveTo: (board at: 'd8').
+	self assert: (board at:'d8') contents equals: MyQueen white.
+]
