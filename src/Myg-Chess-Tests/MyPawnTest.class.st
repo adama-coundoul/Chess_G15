@@ -122,5 +122,5 @@ MyPawnTest >> testSimplePawnPromotion [
 	
 
 	pawn moveTo: (board at: 'd8').
-	self assert: (board at:'d8') contents equals: MyQueen white.
+	self assert: (board at:'d8') contents equals:( MyQueen white)
 ]
