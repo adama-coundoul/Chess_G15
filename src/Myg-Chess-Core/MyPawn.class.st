@@ -6,7 +6,7 @@ Class {
 }
 
 { #category : 'accessing' }
-MyPawn >> id [
+MyPawn >> id [ 
 
 	^ 'P'
 ]
@@ -34,18 +34,30 @@ MyPawn >> promoteToQueen [
     ^ MyQueen new color: self color.
 ]
 
-{ #category : 'rendering' }
+{ #category : 'accessing' }
 MyPawn >> renderPieceOn: aSquare [ 
 	
 	^ aSquare renderPawn: self
 ]
 
-{ #category : 'rendering' }
+{ #category : 'accessing' }
 MyPawn >> targetSquaresLegal: aBoolean [
+    ^ (self isWhite
+        ifTrue: [
+            "Déplacement des pions blancs"
+            ((self square file = $2)
+                ifTrue: [ { (self square up). (self square up up) } ]  "Mouvement de 1 ou 2 cases"
+                ifFalse: [ { self square up } ])  "Mouvement de 1 case"
+        ]
+        ifFalse: [
+            "Déplacement des pions noirs"
+            ((self square file = $7)
+                ifTrue: [ { (self square down). (self square down down) } ]  "Mouvement de 1 ou 2 cases"
+                ifFalse: [ { self square down } ])  "Mouvement de 1 case"
+        ])
+    select: [ :s | 
+        s notNil and: [ 
+            s hasPiece not or: [ s contents color ~= color ] 
+        ] ].
 
-	^ (self isWhite
-		   ifTrue: [ { square up } ]
-		   ifFalse: [ { square down } ]) select: [ :s |
-		  s notNil and: [
-			  s hasPiece not or: [ s contents color ~= color ] ] ]
 ]
