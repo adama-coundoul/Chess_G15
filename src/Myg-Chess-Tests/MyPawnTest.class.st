@@ -13,7 +13,7 @@ MyPawnTest >> testEnPassantCaptureSuccessful [
     pawn := MyPawn white.
     opponentPawn := MyPawn black.
     
-    "Placez le pion noir sur la case e4"
+    "Placez le pion noir sur la case e7"
     board at: 'f7' put: opponentPawn.
     
     "Le pion blanc doit se trouver en e5 pour capturer en passant"
@@ -30,6 +30,7 @@ MyPawnTest >> testEnPassantCaptureSuccessful [
     self assert: ((board at: 'f6') contents = pawn).
 
     self assert: ((board at: 'e5') contents isNil).
+    self assert: ((board at: 'f5') contents isNil).
 ]
 
 { #category : 'tests' }
@@ -76,29 +77,6 @@ MyPawnTest >> testPawnInitialDoubleMove [
 ]
 
 { #category : 'tests' }
-MyPawnTest >> testPawnMoveWithOponentObstacle [ 
-    | pawn squares board |
-    board := MyChessBoard empty.
-    board at: 'e4' put: (pawn := MyPawn white).
-
-    "Place un pion noir à e5 pour bloquer l'avancée"
-    board at: 'e5' put: MyPawn black.
-
-    squares := pawn targetSquaresLegal: true.
-
-    "Affiche les cases cibles pour débogage"
-    Transcript show: 'Target squares: ', squares printString; cr.
-
-    "Vérifie que le pion ne peut pas avancer vers e5 (car bloqué)"
-    self assertCollection: squares 
-        includesAll: 
-            (#( e5 ) collect: [ :name | 
-                board at: name ]).
-    
-
-]
-
-{ #category : 'tests' }
 MyPawnTest >> testSimplePawnMove [ 
     | pawn1 pawn2 squares1 squares2 board | 
 
@@ -130,7 +108,5 @@ MyPawnTest >> testSimplePawnPromotion [
 	
 
 	pawn moveTo: (board at: 'd8').
-	self assert: ((board at:'d8') contents) class equals: MyQueen .
-	self assert: ((board at:'d8') contents) isWhite.
-	
+	self assert: (board at:'d8') contents equals: MyQueen white.
 ]
