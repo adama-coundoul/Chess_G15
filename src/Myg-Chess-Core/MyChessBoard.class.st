@@ -85,6 +85,11 @@ MyChessBoard >> game: aGame [
 	game := aGame
 ]
 
+{ #category : 'initialization' }
+MyChessBoard >> grid [
+    ^ grid
+]
+
 { #category : 'highlighting' }
 MyChessBoard >> highLightTargets: squares [
 
@@ -186,7 +191,7 @@ MyChessBoard >> initializePieces [
 ]
 
 { #category : 'initialization' }
-MyChessBoard >> initializeSquares [
+MyChessBoard >> initializeSquares [ 
 
 	| black |
 	black := false.

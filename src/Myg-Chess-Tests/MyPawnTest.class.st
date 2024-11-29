@@ -13,7 +13,7 @@ MyPawnTest >> testEnPassantCaptureSuccessful [
     pawn := MyPawn white.
     opponentPawn := MyPawn black.
     
-    "Placez le pion noir sur la case e4"
+    "Placez le pion noir sur la case e7"
     board at: 'f7' put: opponentPawn.
     
     "Le pion blanc doit se trouver en e5 pour capturer en passant"
@@ -30,6 +30,7 @@ MyPawnTest >> testEnPassantCaptureSuccessful [
     self assert: ((board at: 'f6') contents = pawn).
 
     self assert: ((board at: 'e5') contents isNil).
+    self assert: ((board at: 'f5') contents isNil).
 ]
 
 { #category : 'tests' }
@@ -60,56 +61,41 @@ MyPawnTest >> testPawnCaptureMove [
 
 { #category : 'tests' }
 MyPawnTest >> testPawnInitialDoubleMove [ 
-    | pawn squares board |  "Déclare les variables"
+    | pawn1 pawn2 squares1 squares2 board |
+    board := MyChessBoard empty. 
+    board at: 'e2' put: (pawn1 := MyPawn white). 
+    board at: 'e7' put: (pawn2 := MyPawn black ). 
 
-    board := MyChessBoard empty.  "Crée un échiquier vide"
+    squares1 := pawn1 targetSquaresLegal: true. 
+    squares2 := pawn2 targetSquaresLegal: true. 
 
-    board at: 'e2' put: (pawn := MyPawn white).  "Place un pion blanc à 'e2'"
+    self assertCollection: squares1
+        includesAll: (#(e3 e4) collect: [ :name | board at: name ]).
+    self assertCollection: squares2
+        includesAll: (#(e6 e5) collect: [ :name | board at: name ]).
 
-    squares := pawn targetSquares.  "Récupère les cases cibles du pion"
-
-    "Vérifie que le pion peut se déplacer vers 'e3' et 'e4'"
-    self assertCollection: squares 
-        includesAll: 
-            (#( e3 e4) collect: [ :name | 
-                board at: name ]).
-]
-
-{ #category : 'tests' }
-MyPawnTest >> testPawnMoveWithOponentObstacle [ 
-    | pawn squares board |
-    board := MyChessBoard empty.
-    board at: 'e4' put: (pawn := MyPawn white).
-
-    "Place un pion noir à e5 pour bloquer l'avancée"
-    board at: 'e5' put: MyPawn black.
-
-    squares := pawn targetSquares.
-
-    "Affiche les cases cibles pour débogage"
-
-
-    "Vérifie que le pion ne peut pas avancer vers e5 (car bloqué)"
-    self assertCollection: squares 
-        includesAll: 
-            (#( e5 ) collect: [ :name | 
-                board at: name ]).
 ]
 
 { #category : 'tests' }
 MyPawnTest >> testSimplePawnMove [ 
-    | pawn squares board |  "Déclare les variables"
+    | pawn1 pawn2 squares1 squares2 board | 
 
-    board := MyChessBoard empty.  "Crée un échiquier vide"
+    board := MyChessBoard empty.  
 
-    board at: 'e4' put: (pawn := MyPawn white).  "Place un pion blanc à 'e4'"
+    board at: 'e4' put: (pawn1 := MyPawn white).  
+    board at: 'e7' put: (pawn2 := MyPawn black). 
 
-    squares := pawn targetSquares.  "Récupère les cases cibles du pion"
+    squares1 := pawn1 targetSquares.  
+    squares2 := pawn2 targetSquares.
 
-    "Vérifie que le pion peut se déplacer vers 'e5'"
-    self assertCollection: squares 
+    self assertCollection: squares1 
         includesAll: 
             (#( e5) collect: [ :name | 
+                board at: name ]).
+
+    self assertCollection: squares2
+        includesAll: 
+            (#( e6) collect: [ :name | 
                 board at: name ]).
 ]
 
