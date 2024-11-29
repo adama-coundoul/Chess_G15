@@ -31,6 +31,17 @@ MyPiece >> attackingSquares [
 	^ self legalTargetSquares
 ]
 
+{ #category : 'as yet unclassified' }
+MyPiece >> beBlack [
+    color := 'black'.
+]
+
+{ #category : 'as yet unclassified' }
+MyPiece >> beWhite [
+    color := 'white'.
+
+]
+
 { #category : 'path commands' }
 MyPiece >> board [
 
@@ -69,8 +80,7 @@ MyPiece >> collectSquares: collectBlock while: untilBlock [
 
 { #category : 'accessing' }
 MyPiece >> color [
-
-	^ color
+        ^ color. 
 ]
 
 { #category : 'accessing' }
@@ -125,6 +135,11 @@ MyPiece >> id [
 	^ 'Q'
 ]
 
+{ #category : 'initialization' }
+MyPiece >> initialize [
+        color := 'white'.  "Par défaut, les pièces sont blanches"
+]
+
 { #category : 'testing' }
 MyPiece >> isKing [
 	
@@ -139,8 +154,7 @@ MyPiece >> isPiece [
 
 { #category : 'testing' }
 MyPiece >> isWhite [
-	
-	^ color isBlack not
+        ^ color = #white.  "Retourner true si la couleur est blanche"
 ]
 
 { #category : 'rendering' }
@@ -169,6 +183,12 @@ MyPiece >> moveTo: aSquare [
 	square emptyContents.
 	square := aSquare.
 	aSquare contents: self
+]
+
+{ #category : 'rendering' }
+MyPiece >> renderOn: aSquare [
+    "Méthode abstraite qui doit être redéfinie dans les sous-classes."
+    self subclassResponsibility.
 ]
 
 { #category : 'rendering' }

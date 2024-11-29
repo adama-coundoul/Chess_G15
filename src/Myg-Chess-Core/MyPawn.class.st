@@ -12,9 +12,8 @@ MyPawn >> id [
 ]
 
 { #category : 'rendering' }
-MyPawn >> renderPieceOn: aSquare [ 
-	
-	^ aSquare renderPawn: self
+MyPawn >> renderOn: aSquare [
+    ^ aSquare renderPawn: self.
 ]
 
 { #category : 'rendering' }
