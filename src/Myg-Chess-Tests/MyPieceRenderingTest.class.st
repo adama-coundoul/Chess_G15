@@ -62,18 +62,22 @@ MyPieceRenderingTest >> testMyKnightRendering [
 ]
 
 { #category : 'as yet unclassified' }
-MyPieceRenderingTest >> testPawnRendering [ {
-    "Créer une case et rendre les pions directement"
-    self assert: (MyChessSquare new renderPawn: (MyPawn new color: #white)) = 'P' 
-        description: 'Erreur: rendu pion blanc incorrect.'.
+MyPieceRenderingTest >> testMyPawnRendering [
 
-    self assert: (MyChessSquare new renderPawn: (MyPawn new color: #black)) = 'p' 
-        description: 'Erreur: rendu pion noir incorrect.'.
+   | whiteSquare blackSquare whitePawn blackPawn |
 
-    "Afficher les résultats dans le Transcript (facultatif)"
-    Transcript show: 'Pion blanc rendu: ', (MyChessSquare new renderPawn: (MyPawn new color: #white)); cr.
-    Transcript show: 'Pion noir rendu: ', (MyChessSquare new renderPawn: (MyPawn new color: #black)); cr.
-}
+    whiteSquare := MyWhiteChessSquare new.
+    blackSquare := MyBlackChessSquare new.
+
+    whitePawn := MyWhitePawn new.
+    blackPawn := MyBlackPawn new.
+
+    self assert: (whitePawn renderPieceOn: whiteSquare) equals: 'P'.
+    self assert: (whitePawn renderPieceOn: blackSquare) equals: 'p'.
+    self assert: (blackPawn renderPieceOn: whiteSquare) equals: 'O'.
+    self assert: (blackPawn renderPieceOn: blackSquare) equals: 'o'.
+
+
 ]
 
 { #category : 'tests' }
