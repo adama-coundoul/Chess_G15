@@ -101,16 +101,19 @@ MyPieceRenderingTest >> testMyQueenRendering [
 ]
 
 { #category : 'tests' }
-MyPieceRenderingTest >> testRookRendering [ {  
-    "Créer une case et rendre les tours directement"
-    self assert: (MyChessSquare new renderRook: (MyRook new color: #white)) = 'R' 
-        description: 'Erreur: rendu tour blanche incorrect.'.
+MyPieceRenderingTest >> testMyRookRendering [
 
-    self assert: (MyChessSquare new renderRook: (MyRook new color: #black)) = 'r' 
-        description: 'Erreur: rendu tour noire incorrect.'.
+    | whiteSquare blackSquare whiteRook blackRook |
 
-    "Afficher les résultats dans le Transcript (facultatif)"
-    Transcript show: 'Tour blanche rendue: ', (MyChessSquare new renderRook: (MyRook new color: #white)); cr.
-    Transcript show: 'Tour noire rendue: ', (MyChessSquare new renderRook: (MyRook new color: #black)); cr.
-}
+    whiteSquare := MyWhiteChessSquare new.
+    blackSquare := MyBlackChessSquare new.
+
+    whiteRook := MyWhiteRook new.
+    blackRook := MyBlackRook new.
+
+    self assert: (whiteRook renderPieceOn: whiteSquare) equals: 'R'.
+    self assert: (whiteRook renderPieceOn: blackSquare) equals: 'r'.
+    self assert: (blackRook renderPieceOn: whiteSquare) equals: 'T'.
+    self assert: (blackRook renderPieceOn: blackSquare) equals: 't'.
+
 ]
