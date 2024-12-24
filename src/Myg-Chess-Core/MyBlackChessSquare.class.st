@@ -25,6 +25,12 @@ MyBlackChessSquare >> renderBlackKing [
 ]
 
 { #category : 'rendering' }
+MyBlackChessSquare >> renderBlackKnight [
+
+    ^ 'm'  
+]
+
+{ #category : 'rendering' }
 MyBlackChessSquare >> renderWhiteBishop [ 
 
     ^ 'b'  
@@ -34,4 +40,10 @@ MyBlackChessSquare >> renderWhiteBishop [
 MyBlackChessSquare >> renderWhiteKing [
 
     ^ 'k'  
+]
+
+{ #category : 'rendering' }
+MyBlackChessSquare >> renderWhiteKnight [
+
+    ^ 'n'  
 ]
