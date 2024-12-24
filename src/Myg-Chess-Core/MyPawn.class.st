@@ -30,8 +30,10 @@ MyPawn >> promoteToQueen [
 ]
 
 { #category : 'rendering' }
-MyPawn >> renderOn: aSquare [
-    ^ aSquare renderPawn: self.
+MyPawn >> renderPieceOn: aSquare [
+
+	^ self subclassResponsibility 
+
 ]
 
 { #category : 'accessing' }
