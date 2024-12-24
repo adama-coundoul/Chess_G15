@@ -6,21 +6,6 @@ Class {
 }
 
 { #category : 'tests' }
-MyPieceRenderingTest >> testBishopRendering [ {
-    "Créer une case et rendre les fous directement"
-    self assert: (MyChessSquare new renderBishop: (MyBishop new color: #white)) = 'B' 
-        description: 'Erreur: rendu fou blanc incorrect.'.
-
-    self assert: (MyChessSquare new renderBishop: (MyBishop new color: #black)) = 'b' 
-        description: 'Erreur: rendu fou noir incorrect.'.
-
-    "Afficher les résultats dans le Transcript (facultatif)"
-    Transcript show: 'Fou blanc rendu: ', (MyChessSquare new renderBishop: (MyBishop new color: #white)); cr.
-    Transcript show: 'Fou noir rendu: ', (MyChessSquare new renderBishop: (MyBishop new color: #black)); cr.
-}
-]
-
-{ #category : 'tests' }
 MyPieceRenderingTest >> testKingRendering [ {
     "Créer une case et rendre les rois directement"
     self assert: (MyChessSquare new renderKing: (MyKing new color: #white)) = 'K' 
@@ -49,6 +34,24 @@ MyPieceRenderingTest >> testKnightRendering [ {
     Transcript show: 'Cavalier blanc rendu: ', (MyChessSquare new renderKnight: (MyKnight new color: #white)); cr.
     Transcript show: 'Cavalier noir rendu: ', (MyChessSquare new renderKnight: (MyKnight new color: #black)); cr.
 }
+]
+
+{ #category : 'tests' }
+MyPieceRenderingTest >> testMyBishopRendering [
+
+    | whiteSquare blackSquare whiteBishop blackBishop |
+
+    whiteSquare := MyWhiteChessSquare new.
+    blackSquare := MyBlackChessSquare new.
+
+    whiteBishop := MyWhiteBishop new.
+    blackBishop := MyBlackBishop new.
+
+    self assert: (whiteBishop renderPieceOn: whiteSquare) equals: 'B'.
+    self assert: (whiteBishop renderPieceOn: blackSquare) equals: 'b'.
+    self assert: (blackBishop renderPieceOn: whiteSquare) equals: 'V'.
+    self assert: (blackBishop renderPieceOn: blackSquare) equals: 'v'.
+
 ]
 
 { #category : 'as yet unclassified' }
