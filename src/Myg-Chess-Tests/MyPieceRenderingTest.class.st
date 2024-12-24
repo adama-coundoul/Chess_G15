@@ -6,21 +6,6 @@ Class {
 }
 
 { #category : 'tests' }
-MyPieceRenderingTest >> testKnightRendering [ {
-    "Créer une case et rendre les cavaliers directement"
-    self assert: (MyChessSquare new renderKnight: (MyKnight new color: #white)) = 'N' 
-        description: 'Erreur: rendu cavalier blanc incorrect.'.
-
-    self assert: (MyChessSquare new renderKnight: (MyKnight new color: #black)) = 'n' 
-        description: 'Erreur: rendu cavalier noir incorrect.'.
-
-    "Afficher les résultats dans le Transcript (facultatif)"
-    Transcript show: 'Cavalier blanc rendu: ', (MyChessSquare new renderKnight: (MyKnight new color: #white)); cr.
-    Transcript show: 'Cavalier noir rendu: ', (MyChessSquare new renderKnight: (MyKnight new color: #black)); cr.
-}
-]
-
-{ #category : 'tests' }
 MyPieceRenderingTest >> testMyBishopRendering [
 
     | whiteSquare blackSquare whiteBishop blackBishop |
@@ -53,6 +38,26 @@ MyPieceRenderingTest >> testMyKingRendering [
     self assert: (whiteKing renderPieceOn: blackSquare) equals: 'k'.
     self assert: (blackKing renderPieceOn: whiteSquare) equals: 'L'.
     self assert: (blackKing renderPieceOn: blackSquare) equals: 'l'.
+
+]
+
+{ #category : 'tests' }
+MyPieceRenderingTest >> testMyKnightRendering [
+
+    | whiteSquare blackSquare whiteKnight blackKnight |
+
+    whiteSquare := MyWhiteChessSquare new.
+    blackSquare := MyBlackChessSquare new.
+
+    whiteKnight := MyWhiteKnight new.
+    blackKnight := MyBlackKnight new.
+
+    self assert: (whiteKnight renderPieceOn: whiteSquare) equals: 'N'.
+    self assert: (whiteKnight renderPieceOn: blackSquare) equals: 'n'.
+    self assert: (blackKnight renderPieceOn: whiteSquare) equals: 'M'.
+    self assert: (blackKnight renderPieceOn: blackSquare) equals: 'm'.
+
+
 
 ]
 
