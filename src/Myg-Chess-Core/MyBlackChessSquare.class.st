@@ -11,3 +11,15 @@ MyBlackChessSquare >> initialize [
    ^ super initialize 
      color: Color black
 ]
+
+{ #category : 'rendering' }
+MyBlackChessSquare >> renderBlackBishop [ 
+
+    ^ 'v'  
+]
+
+{ #category : 'rendering' }
+MyBlackChessSquare >> renderWhiteBishop [ 
+
+    ^ 'b'  
+]
