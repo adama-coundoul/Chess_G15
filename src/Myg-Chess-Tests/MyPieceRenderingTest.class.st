@@ -81,18 +81,23 @@ MyPieceRenderingTest >> testMyPawnRendering [
 ]
 
 { #category : 'tests' }
-MyPieceRenderingTest >> testQueenRendering [ {
-    "Créer une case et rendre les reines directement"
-    self assert: (MyChessSquare new renderQueen: (MyQueen new color: #white)) = 'Q' 
-        description: 'Erreur: rendu reine blanche incorrect.'.
+MyPieceRenderingTest >> testMyQueenRendering [
 
-    self assert: (MyChessSquare new renderQueen: (MyQueen new color: #black)) = 'q' 
-        description: 'Erreur: rendu reine noire incorrect.'.
+    | whiteSquare blackSquare whiteQueen blackQueen |
 
-    "Afficher les résultats dans le Transcript (facultatif)"
-    Transcript show: 'Reine blanche rendue: ', (MyChessSquare new renderQueen: (MyQueen new color: #white)); cr.
-    Transcript show: 'Reine noire rendue: ', (MyChessSquare new renderQueen: (MyQueen new color: #black)); cr.
-}
+    whiteSquare := MyWhiteChessSquare new.
+    blackSquare := MyBlackChessSquare new.
+
+    whiteQueen := MyWhiteQueen new.
+    blackQueen := MyBlackQueen new.
+
+    self assert: (whiteQueen renderPieceOn: whiteSquare) equals: 'Q'.
+    self assert: (whiteQueen renderPieceOn: blackSquare) equals: 'q'.
+    self assert: (blackQueen renderPieceOn: whiteSquare) equals: 'W'.
+    self assert: (blackQueen renderPieceOn: blackSquare) equals: 'w'.
+
+
+
 ]
 
 { #category : 'tests' }
