@@ -37,6 +37,12 @@ MyWhiteChessSquare >> renderBlackPawn [
 ]
 
 { #category : 'rendering' }
+MyWhiteChessSquare >> renderBlackQueen [
+
+    ^ 'W'  
+]
+
+{ #category : 'rendering' }
 MyWhiteChessSquare >> renderWhiteBishop [ 
 
     ^ 'B'  
@@ -58,4 +64,10 @@ MyWhiteChessSquare >> renderWhiteKnight [
 MyWhiteChessSquare >> renderWhitePawn [
 
     ^ 'P'  
+]
+
+{ #category : 'rendering' }
+MyWhiteChessSquare >> renderWhiteQueen [
+
+    ^ 'Q'  
 ]
