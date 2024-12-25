@@ -40,6 +40,20 @@ MyPawnTest >> testId [
 ]
 
 { #category : 'tests' }
+MyPawnTest >> testInterActivePawnPromotion [
+
+| pawn board |
+	board := MyChessBoard empty.
+	board at: 'd7' put: (pawn := MyPawn white).
+	
+
+	pawn moveToInterActiveVersion: (board at: 'd8').
+	self assert: ((board at:'d8') contents) class equals: MyQueen .
+	self assert: ((board at:'d8') contents) isWhite.
+	
+]
+
+{ #category : 'tests' }
 MyPawnTest >> testPawnCaptureMove [ 
     | pawn capturedPawn board |
     board := MyChessBoard empty.
