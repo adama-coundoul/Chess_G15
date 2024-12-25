@@ -44,23 +44,6 @@ MyPawn >> isPawn [
 ]
 
 { #category : 'path commands' }
-MyPawn >> moveTo: aSquare [
-	
-    "Déplace le pion vers une nouvelle case et vérifie s'il doit être promu."
-    (self legalTargetSquares includes: aSquare) ifFalse: [ ^ self ].
-    square emptyContents.
-    square := aSquare.
-    (self isOnLastRank: square )
-                ifTrue: [ aSquare contents: self promoteToQueen ]
-					 ifFalse: [aSquare contents: self]
- 
-    
-   
-    
-            
-]
-
-{ #category : 'path commands' }
 MyPawn >> moveToAutomaticVersion: aSquare [
     
     (self legalTargetSquares includes: aSquare) ifFalse: [ ^ self ].
