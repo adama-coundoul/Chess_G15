@@ -5,6 +5,12 @@ Class {
 	#package : 'Myg-Chess-Core'
 }
 
+{ #category : 'accessing' }
+MyWhitePawn >> promoteToQueen [ 
+
+^ MyWhiteQueen new. 
+]
+
 { #category : 'rendering' }
 MyWhitePawn >> renderPieceOn: aSquare [
 

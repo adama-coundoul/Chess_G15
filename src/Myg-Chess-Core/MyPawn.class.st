@@ -85,7 +85,7 @@ MyPawn >> moveToInteractiveVersion: aSquare [
 { #category : 'accessing' }
 MyPawn >> promoteToQueen [ 
     "Transforme le pion en une reine de la même couleur."
-    ^ MyQueen new color: self color.
+    ^ self subclassResponsibility 
 ]
 
 { #category : 'as yet unclassified' }
