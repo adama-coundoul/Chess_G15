@@ -132,6 +132,11 @@ MyPiece >> isKing [
 ]
 
 { #category : 'testing' }
+MyPiece >> isPawn [ 
+^ false 
+]
+
+{ #category : 'testing' }
 MyPiece >> isPiece [
 	
 	^ true
@@ -163,6 +168,16 @@ MyPiece >> legalTargetSquares [
 
 { #category : 'path commands' }
 MyPiece >> moveTo: aSquare [
+
+	(self legalTargetSquares includes: aSquare) ifFalse: [ ^ self ].
+
+	square emptyContents.
+	square := aSquare.
+	aSquare contents: self
+]
+
+{ #category : 'path commands' }
+MyPiece >> moveToAutomaticVersion: aSquare [
 
 	(self legalTargetSquares includes: aSquare) ifFalse: [ ^ self ].
 

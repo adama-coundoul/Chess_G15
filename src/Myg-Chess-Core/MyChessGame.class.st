@@ -126,7 +126,21 @@ MyChessGame >> initializeFromFENGame: aFENGame [
 { #category : 'public' }
 MyChessGame >> move: piece to: square [
 
-	piece moveTo: square.
+	piece moveToAutomaticVersion: square.
+	self recordMovementOf: piece to: square
+]
+
+{ #category : 'public' }
+MyChessGame >> moveAutomatic: piece to: square [
+
+	piece moveToAutomaticVersion: square.
+	self recordMovementOf: piece to: square
+]
+
+{ #category : 'public' }
+MyChessGame >> moveInteractive: piece to: square [
+
+	piece moveToInteractiveVersion: square.
 	self recordMovementOf: piece to: square
 ]
 
