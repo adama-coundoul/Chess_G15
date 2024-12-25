@@ -72,7 +72,9 @@ MyPlayer >> play [
 		pieces remove: piece.
 		legalMoves := piece legalTargetSquares.
 		legalMoves ifNotEmpty: [
-			game moveAutomatic: piece to: legalMoves atRandom.
+			(piece isPawn )
+		ifTrue: [  game moveInteractive: piece  to: legalMoves atRandom  ] 
+		ifFalse: [ game move: piece  to: legalMoves atRandom ].
 			^ self ] ].
 
 	self halt: 'NO MOVES AVAILABLE!'

@@ -42,6 +42,8 @@ MySelectedState >> clickOn: aMyChessSquare [
 		ifFalse: [board game move: selection contents to: aMyChessSquare ]].
 
 	^ MyUnselectedState board: board
+	
+
 ]
 
 { #category : 'accessing' }
