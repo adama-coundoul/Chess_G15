@@ -40,17 +40,28 @@ MyPawnTest >> testId [
 ]
 
 { #category : 'tests' }
-MyPawnTest >> testInterActivePawnPromotion [
+MyPawnTest >> testInteractivePawnPromotion [
+    | pawn board |
+    
+   
+    board := MyChessBoard empty.
+    pawn := MyBlackPawn new.
+    board at: 'd7' put: pawn.
+    self assert: ((board at:'d7') contents) equals: pawn .
+    
+  
+    pawn class compile: 'promptForPromotion ^ MyBlackBishop new'.
+   
+    pawn moveToInteractiveVersion: (board at: 'd8').
+    
+   	self assert: ((board at:'d8') contents) class equals: MyBlackBishop .
+    
+   self assert: ((board at: 'd7') contents isNil).
 
-| pawn board |
-	board := MyChessBoard empty.
-	board at: 'd7' put: (pawn := MyPawn white).
-	
+    
+    
 
-	pawn moveToInterActiveVersion: (board at: 'd8').
-	self assert: ((board at:'d8') contents) class equals: MyQueen .
-	self assert: ((board at:'d8') contents) isWhite.
-	
+   
 ]
 
 { #category : 'tests' }

@@ -71,7 +71,7 @@ MyPawn >> moveToInteractiveVersion: aSquare [
     square emptyContents.
     square := aSquare.
     
-    ((aSquare file = $1) or: (aSquare file = $8)) 
+    (self isOnLastRank: square) 
         ifTrue: [
             promotedPiece := self promptForPromotion.
             square contents: promotedPiece.
@@ -83,7 +83,25 @@ MyPawn >> moveToInteractiveVersion: aSquare [
 ]
 
 { #category : 'accessing' }
+MyPawn >> promoteToBishop [
+    "Transforme le pion en une reine de la même couleur."
+    ^ self subclassResponsibility 
+]
+
+{ #category : 'accessing' }
+MyPawn >> promoteToKnight [
+    "Transforme le pion en une reine de la même couleur."
+    ^ self subclassResponsibility 
+]
+
+{ #category : 'accessing' }
 MyPawn >> promoteToQueen [ 
+    "Transforme le pion en une reine de la même couleur."
+    ^ self subclassResponsibility 
+]
+
+{ #category : 'accessing' }
+MyPawn >> promoteToRook [
     "Transforme le pion en une reine de la même couleur."
     ^ self subclassResponsibility 
 ]
@@ -95,10 +113,10 @@ MyPawn >> promptForPromotion [
     choice := self showPromotionDialog.
     
     "Créer la nouvelle pièce selon le choix de l'utilisateur"
-    choice = 'Queen' ifTrue: [promotedPiece := (MyQueen new color: self color)].
-    choice = 'Rook' ifTrue: [promotedPiece := (MyRook new color: self color)].
-    choice = 'Bishop' ifTrue: [promotedPiece := (MyBishop new color: self color)].
-    choice = 'Knight' ifTrue: [promotedPiece := (MyKnight new color: self color)].
+    choice = 'Queen' ifTrue: [promotedPiece := self promoteToQueen].
+    choice = 'Rook' ifTrue: [promotedPiece := self promoteToRook ].
+    choice = 'Bishop' ifTrue: [promotedPiece := self promoteToBishop ].
+    choice = 'Knight' ifTrue: [promotedPiece := self promoteToBishop ].
     choice ifNil: [self error: 'Invalid choice'].
     
     ^ promotedPiece
