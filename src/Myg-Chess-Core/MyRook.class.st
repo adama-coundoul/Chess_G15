@@ -11,8 +11,9 @@ MyRook >> id [
 ]
 
 { #category : 'rendering' }
-MyRook >> renderOn: aSquare [
-    ^ aSquare renderRook: self.
+MyRook >> renderPieceOn: aSquare [
+
+	^ self subclassResponsibility 
 ]
 
 { #category : 'rendering' }

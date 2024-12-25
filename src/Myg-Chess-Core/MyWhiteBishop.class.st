@@ -1,12 +1,12 @@
 Class {
-	#name : 'MyBlackBishop',
+	#name : 'MyWhiteBishop',
 	#superclass : 'MyBishop',
 	#category : 'Myg-Chess-Core',
 	#package : 'Myg-Chess-Core'
 }
 
 { #category : 'rendering' }
-MyBlackBishop >> renderPieceOn: aSquare [
+MyWhiteBishop >> renderPieceOn: aSquare [
 
-	^ aSquare renderBlackBishop
+	^ aSquare renderWhiteBishop
 ]

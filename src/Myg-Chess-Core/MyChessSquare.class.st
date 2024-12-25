@@ -198,56 +198,6 @@ MyChessSquare >> printOn: aStream [
 		print: name
 ]
 
-{ #category : 'rendering' }
-MyChessSquare >> renderBishop: aPiece [
-   ^ aPiece color = #white
-        ifTrue: [ 'B' ]  "Fou blanc"
-        ifFalse: [ 'b' ].  "Fou noir"
-]
-
-{ #category : 'rendering' }
-MyChessSquare >> renderKing: aPiece [
-    ^ aPiece color = #white
-        ifTrue: [ 'K' ]  "Roi blanc"
-        ifFalse: [ 'k' ].  "Roi noir"
-]
-
-{ #category : 'rendering' }
-MyChessSquare >> renderKnight: aPiece [
-    ^ aPiece color = #white
-        ifTrue: [ 'N' ]  "Cavalier blanc"
-        ifFalse: [ 'n' ].  "Cavalier noir"
-]
-
-{ #category : 'rendering' }
-MyChessSquare >> renderPawn: aPiece [
-    ^ aPiece color = #white
-        ifTrue: [ 'P' ]  "Pion blanc"
-        ifFalse: [ 'p' ].  "Pion noir"
-]
-
-{ #category : 'rendering' }
-MyChessSquare >> renderPiece: aPiece [
-
-    ^ aPiece renderOn: self.
-]
-
-{ #category : 'rendering' }
-MyChessSquare >> renderQueen: aPiece [
-    ^ aPiece color = #white
-        ifTrue: [ 'Q' ]    "Reine blanche"
-        ifFalse: [ 'q' ].  "Reine noire"
-]
-
-{ #category : 'rendering' }
-MyChessSquare >> renderRook: aPiece [
-      ^ aPiece color = #white         
-          ifTrue: [ 'R' ]    "Tour blanche"         
-          ifFalse: [ 'r' ].  "Tour noire"
-
-
-]
-
 { #category : 'accessing' }
 MyChessSquare >> right [
 	
