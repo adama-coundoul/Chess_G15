@@ -200,85 +200,52 @@ MyChessSquare >> printOn: aStream [
 
 { #category : 'rendering' }
 MyChessSquare >> renderBishop: aPiece [
-
-	^ aPiece isWhite
-		  ifTrue: [
-			  color isBlack
-				  ifFalse: [ 'B' ]
-				  ifTrue: [ 'b' ] ]
-		  ifFalse: [
-			  color isBlack
-				  ifFalse: [ 'V' ]
-				  ifTrue: [ 'v' ] ]
+   ^ aPiece color = #white
+        ifTrue: [ 'B' ]  "Fou blanc"
+        ifFalse: [ 'b' ].  "Fou noir"
 ]
 
 { #category : 'rendering' }
 MyChessSquare >> renderKing: aPiece [
-
-	^ aPiece isWhite
-		  ifFalse: [
-			  color isBlack
-				  ifFalse: [ 'L' ]
-				  ifTrue: [ 'l' ] ]
-		  ifTrue: [
-			  color isBlack
-				  ifFalse: [ 'K' ]
-				  ifTrue: [ 'k' ] ]
+    ^ aPiece color = #white
+        ifTrue: [ 'K' ]  "Roi blanc"
+        ifFalse: [ 'k' ].  "Roi noir"
 ]
 
 { #category : 'rendering' }
 MyChessSquare >> renderKnight: aPiece [
-
-	^ aPiece isWhite
-		  ifFalse: [ color isBlack
-				  ifFalse: [ 'M' ]
-				  ifTrue: [ 'm' ] ]
-		  ifTrue: [
-			  color isBlack
-				  ifFalse: [ 'N' ]
-				  ifTrue: [ 'n' ] ]
+    ^ aPiece color = #white
+        ifTrue: [ 'N' ]  "Cavalier blanc"
+        ifFalse: [ 'n' ].  "Cavalier noir"
 ]
 
 { #category : 'rendering' }
 MyChessSquare >> renderPawn: aPiece [
+    ^ aPiece color = #white
+        ifTrue: [ 'P' ]  "Pion blanc"
+        ifFalse: [ 'p' ].  "Pion noir"
+]
 
-	^ aPiece isWhite
-		  ifFalse: [
-			  color isBlack
-				  ifFalse: [ 'O' ]
-				  ifTrue: [ 'o' ] ]
-		  ifTrue: [
-			  color isBlack
-				  ifFalse: [ 'P' ]
-				  ifTrue: [ 'p' ] ]
+{ #category : 'rendering' }
+MyChessSquare >> renderPiece: aPiece [
+
+    ^ aPiece renderOn: self.
 ]
 
 { #category : 'rendering' }
 MyChessSquare >> renderQueen: aPiece [
-
-	^ aPiece isWhite
-		  ifFalse: [
-			  color isBlack
-				  ifFalse: [ 'W' ]
-				  ifTrue: [ 'w' ] ]
-		  ifTrue: [
-			  color isBlack
-				  ifFalse: [ 'Q' ]
-				  ifTrue: [ 'q' ] ]
+    ^ aPiece color = #white
+        ifTrue: [ 'Q' ]    "Reine blanche"
+        ifFalse: [ 'q' ].  "Reine noire"
 ]
 
 { #category : 'rendering' }
 MyChessSquare >> renderRook: aPiece [
+      ^ aPiece color = #white         
+          ifTrue: [ 'R' ]    "Tour blanche"         
+          ifFalse: [ 'r' ].  "Tour noire"
 
-	^ aPiece isWhite
-		  ifFalse: [
-			  color isBlack
-				  ifFalse: [ 'T' ]
-				  ifTrue: [ 't' ] ]
-		  ifTrue: [
-			  color isBlack
-				  ifFalse: [ 'R' ]
-				  ifTrue: [ 'r' ] ]
+
 ]
 
 { #category : 'accessing' }

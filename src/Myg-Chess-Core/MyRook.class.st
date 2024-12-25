@@ -11,9 +11,8 @@ MyRook >> id [
 ]
 
 { #category : 'rendering' }
-MyRook >> renderPieceOn: aSquare [
-
-	^ aSquare renderRook: self
+MyRook >> renderOn: aSquare [
+    ^ aSquare renderRook: self.
 ]
 
 { #category : 'rendering' }

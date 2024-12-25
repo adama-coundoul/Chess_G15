@@ -12,9 +12,8 @@ MyBishop >> id [
 ]
 
 { #category : 'rendering' }
-MyBishop >> renderPieceOn: aSquare [
-
-	^ aSquare renderBishop: self
+MyBishop >> renderOn: aSquare [
+    ^ aSquare renderBishop: self.
 ]
 
 { #category : 'rendering' }

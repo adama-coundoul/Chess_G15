@@ -61,10 +61,10 @@ MyChessGame >> initialize [
 
 	super initialize.
 	self initializeFonts.
-
 	moves := OrderedCollection new.
 	whitePlayer := MyPlayer new white game: self.
 	blackPlayer := MyPlayer new black game: self
+	
 ]
 
 { #category : 'initialization' }
