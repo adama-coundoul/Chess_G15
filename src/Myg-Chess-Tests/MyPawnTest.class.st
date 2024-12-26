@@ -6,12 +6,25 @@ Class {
 }
 
 { #category : 'tests' }
+MyPawnTest >> testAutomaticPawnPromotion [
+
+| pawn board |
+	board := MyChessBoard empty.
+	board at: 'd7' put: (pawn := MyWhitePawn new).
+	
+
+	pawn moveToAutomaticVersion: (board at: 'd8').
+	self assert: ((board at:'d8') contents) class equals: MyWhiteQueen.
+	
+]
+
+{ #category : 'tests' }
 MyPawnTest >> testEnPassantCaptureSuccessful [ 
     | pawn opponentPawn board targetSquare |
     
     board := MyChessBoard empty.
-    pawn := MyPawn white.
-    opponentPawn := MyPawn black.
+    pawn := MyWhitePawn new .
+    opponentPawn := MyBlackPawn new.
     
     "Placez le pion noir sur la case e7"
     board at: 'f7' put: opponentPawn.
@@ -20,14 +33,14 @@ MyPawnTest >> testEnPassantCaptureSuccessful [
     board at: 'e5' put: pawn.
 
     "Déplacez le pion noir de f7 à f5"
-    opponentPawn moveTo: (board at: 'f5').
+    opponentPawn moveToAutomaticVersion: (board at: 'f5').
 
     "Simulez la capture en passant"
     targetSquare := 'f6'.
-    pawn moveTo: (board at: targetSquare).
+    pawn moveToAutomaticVersion: (board at: targetSquare).
 
     "Vérifiez que le pion noir est capturé"
-    self assert: ((board at: 'f6') contents = pawn).
+    self assert: ((board at: 'f6') contents equals: pawn).
 
     self assert: ((board at: 'e5') contents isNil).
     self assert: ((board at: 'f5') contents isNil).
@@ -62,6 +75,58 @@ MyPawnTest >> testInteractivePawnPromotion [
     
 
    
+]
+
+{ #category : 'tests' }
+MyPawnTest >> testNoAutomaticPawnPromotionWhenNotInLastRank [
+
+| pawn board |
+	board := MyChessBoard empty.
+	board at: 'd6' put: (pawn := MyWhitePawn new).
+	
+
+	pawn moveToAutomaticVersion: (board at: 'd7').
+	self assert: ((board at:'d7') contents)  equals: pawn.
+	
+]
+
+{ #category : 'tests' }
+MyPawnTest >> testNoInteractivePawnPromotionWhenNotInLastRank [
+
+    | pawn board |
+    
+   
+    board := MyChessBoard empty.
+    pawn := MyBlackPawn new.
+    board at: 'd5' put: pawn.
+    self assert: ((board at:'d5') contents) equals: pawn .
+    
+  
+    pawn class compile: 'promptForPromotion ^ MyBlackBishop new'.
+   
+    pawn moveToInteractiveVersion: (board at: 'd6').
+    
+   	self deny: ((board at:'d6') contents) class equals: MyBlackBishop .
+    
+   self assert: ((board at: 'd5') contents isNil).
+   self assert: ((board at:'d6') contents) equals: pawn .
+    
+    
+
+   
+]
+
+{ #category : 'tests' }
+MyPawnTest >> testNoPromotionWhenNotPawn [
+
+| piece board |
+	board := MyChessBoard empty.
+	board at: 'd7' put: (piece := MyWhiteRook new).
+	
+
+	piece moveToAutomaticVersion: (board at: 'd8').
+	self assert: ((board at:'d8') contents) equals: piece.
+	
 ]
 
 { #category : 'tests' }
@@ -107,8 +172,8 @@ MyPawnTest >> testSimplePawnMove [
 
     board := MyChessBoard empty.  
 
-    board at: 'e4' put: (pawn1 := MyPawn white).  
-    board at: 'e7' put: (pawn2 := MyPawn black). 
+    board at: 'e4' put: (pawn1 := MyWhitePawn new).  
+    board at: 'e7' put: (pawn2 := MyBlackPawn new ). 
 
     squares1 := pawn1 targetSquares.  
     squares2 := pawn2 targetSquares.
@@ -122,17 +187,4 @@ MyPawnTest >> testSimplePawnMove [
         includesAll: 
             (#( e6) collect: [ :name | 
                 board at: name ]).
-]
-
-{ #category : 'tests' }
-MyPawnTest >> testSimplePawnPromotion [
-
-| pawn board |
-	board := MyChessBoard empty.
-	board at: 'd7' put: (pawn := MyWhitePawn new).
-	
-
-	pawn moveToAutomaticVersion: (board at: 'd8').
-	self assert: ((board at:'d8') contents) class equals: MyWhiteQueen.
-	
 ]

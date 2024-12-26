@@ -39,7 +39,7 @@ MySelectedState >> clickOn: aMyChessSquare [
 		board unhighLightTargets: selection contents targetSquares.
 		(selection contents isPawn )
 		ifTrue: [ board game moveInteractive: selection contents to: aMyChessSquare  ] 
-		ifFalse: [board game move: selection contents to: aMyChessSquare ]].
+		ifFalse: [board game moveAutomatic: selection contents to: aMyChessSquare ]].
 
 	^ MyUnselectedState board: board
 	
