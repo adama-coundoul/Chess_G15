@@ -131,30 +131,28 @@ MyPawnTest >> testNoPromotionWhenNotPawn [
 
 { #category : 'tests' }
 MyPawnTest >> testPawnCaptureMove [ 
-    | pawn capturedPawn board |
+    | whitePawn blackPawnLeft blackPawnRight board squares |
+    
     board := MyChessBoard empty.
-    board at: 'e4' put: (pawn := MyPawn white).
-    board at: 'd5' put: (capturedPawn := MyPawn black).  "Pièce adverse sur la case diagonale"
-    
-    "Simuler la capture"
-    pawn moveTo: (board at: 'd5').  "Déplacer le pion blanc vers 'd5'"
-    
-    "Vérifier que 'e4' est vide après le déplacement"
-    self assert: ((board at: 'e4') contents isNil).
 
-    "Vérifier que le pion blanc est bien à 'd5' après la capture"
-    self assert: ((board at: 'd5') contents = pawn).
+    board at: 'e5' put: (whitePawn := MyWhitePawn new).
 
-    "Vérifier que l'ancienne pièce noire a été capturée"
-    self assert: ((board at: 'd5') contents ~~ capturedPawn).
+    board at: 'd6' put: (blackPawnLeft := MyBlackPawn new).
+    board at: 'f6' put: (blackPawnRight := MyBlackPawn new).
+
+    squares := whitePawn targetSquaresLegal: true. 
+
+    self assertCollection: squares
+        includesAll: (#(e6 d6 f6) collect: [ :name | board at: name ]).
+
 ]
 
 { #category : 'tests' }
 MyPawnTest >> testPawnInitialDoubleMove [ 
     | pawn1 pawn2 squares1 squares2 board |
     board := MyChessBoard empty. 
-    board at: 'e2' put: (pawn1 := MyPawn white). 
-    board at: 'e7' put: (pawn2 := MyPawn black ). 
+    board at: 'e2' put: (pawn1 := MyWhitePawn new). 
+    board at: 'e7' put: (pawn2 := MyBlackPawn new). 
 
     squares1 := pawn1 targetSquaresLegal: true. 
     squares2 := pawn2 targetSquaresLegal: true. 
