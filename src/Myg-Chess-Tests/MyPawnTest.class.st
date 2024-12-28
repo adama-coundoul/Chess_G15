@@ -124,7 +124,7 @@ MyPawnTest >> testNoPromotionWhenNotPawn [
 	board at: 'd7' put: (piece := MyWhiteRook new).
 	
 
-	piece moveToAutomaticVersion: (board at: 'd8').
+	piece moveTo: (board at: 'd8').
 	self assert: ((board at:'d8') contents) equals: piece.
 	
 ]
