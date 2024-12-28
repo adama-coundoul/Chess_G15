@@ -29,10 +29,6 @@ MyBlackPawn >> promoteToRook [
 ^ MyBlackRook new .
 ]
 
-{ #category : 'as yet unclassified' }
-MyBlackPawn >> promptForPromotion [ ^ MyBlackBishop new
-]
-
 { #category : 'rendering' }
 MyBlackPawn >> renderPieceOn: aSquare [
 
