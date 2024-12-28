@@ -30,7 +30,7 @@ MyWhitePawn >> promoteToRook [
 ]
 
 { #category : 'as yet unclassified' }
-MyWhitePawn >> promptForPromotion [ ^ MyWhiteBishop new
+MyWhitePawn >> promptForPromotion [ ^ MyWhiteRook new
 ]
 
 { #category : 'rendering' }
