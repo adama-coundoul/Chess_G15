@@ -191,16 +191,6 @@ MyPiece >> moveTo: aSquare [
 	aSquare contents: self
 ]
 
-{ #category : 'path commands' }
-MyPiece >> moveToAutomaticVersion: aSquare [
-
-	(self legalTargetSquares includes: aSquare) ifFalse: [ ^ self ].
-
-	square emptyContents.
-	square := aSquare.
-	aSquare contents: self
-]
-
 { #category : 'rendering' }
 MyPiece >> renderOn: aSquare [
     "Méthode abstraite qui doit être redéfinie dans les sous-classes."

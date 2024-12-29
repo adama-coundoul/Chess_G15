@@ -5,27 +5,6 @@ Class {
 	#package : 'Myg-Chess-Core'
 }
 
-{ #category : 'as yet unclassified' }
-MyPawn >> createPromotionDialog [
-    | dialog layout |
-    dialog := BlSpace new.
-    layout := BlLinearLayout vertical.
-    
-    #('Queen' 'Rook' 'Bishop' 'Knight') do: [ :piece |
-        | button |
-        button := ToButton new
-            label: piece;
-            whenClickedDo: [ dialog close. ^piece ].
-        layout addChild: button ].
-    
-    dialog root addChild: (BlElement new
-        layout: layout;
-        constraintsDo: [ :c |
-            c horizontal fitContent.
-            c vertical fitContent ]).
-    dialog show.
-]
-
 { #category : 'accessing' }
 MyPawn >> id [ 
 
@@ -116,7 +95,7 @@ MyPawn >> promptForPromotion [
     choice = 'Queen' ifTrue: [promotedPiece := self promoteToQueen].
     choice = 'Rook' ifTrue: [promotedPiece := self promoteToRook ].
     choice = 'Bishop' ifTrue: [promotedPiece := self promoteToBishop ].
-    choice = 'Knight' ifTrue: [promotedPiece := self promoteToBishop ].
+    choice = 'Knight' ifTrue: [promotedPiece := self promoteToKnight ].
     choice ifNil: [self error: 'Invalid choice'].
     
     ^ promotedPiece

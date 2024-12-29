@@ -58,16 +58,16 @@ MyPawnTest >> testInteractivePawnPromotion [
     
    
     board := MyChessBoard empty.
-    pawn := MyBlackPawn new.
+    pawn := MyWhitePawn new.
     board at: 'd7' put: pawn.
     self assert: ((board at:'d7') contents) equals: pawn .
     
   
-    pawn class compile: 'promptForPromotion ^ MyBlackBishop new'.
+    pawn class compile: 'promptForPromotion ^ MyWhiteRook new'.
    
     pawn moveToInteractiveVersion: (board at: 'd8').
     
-   	self assert: ((board at:'d8') contents) class equals: MyBlackBishop .
+   	self assert: ((board at:'d8') contents) class equals: MyWhiteRook .
     
    self assert: ((board at: 'd7') contents isNil).
 
@@ -97,18 +97,18 @@ MyPawnTest >> testNoInteractivePawnPromotionWhenNotInLastRank [
     
    
     board := MyChessBoard empty.
-    pawn := MyBlackPawn new.
+    pawn := MyWhitePawn new.
     board at: 'd5' put: pawn.
     self assert: ((board at:'d5') contents) equals: pawn .
     
   
-    pawn class compile: 'promptForPromotion ^ MyBlackBishop new'.
+    pawn class compile: 'promptForPromotion ^ MyWhiteBishop new'.
    
     pawn moveToInteractiveVersion: (board at: 'd6').
     
-   	self deny: ((board at:'d6') contents) class equals: MyBlackBishop .
+   	self deny: (((board at:'d6') contents) class) equals: MyWhiteBishop.
     
-   self assert: ((board at: 'd5') contents isNil).
+   self assert: ((board at: 'd5') contents isNil ).
    self assert: ((board at:'d6') contents) equals: pawn .
     
     
@@ -124,7 +124,7 @@ MyPawnTest >> testNoPromotionWhenNotPawn [
 	board at: 'd7' put: (piece := MyWhiteRook new).
 	
 
-	piece moveToAutomaticVersion: (board at: 'd8').
+	piece moveTo: (board at: 'd8').
 	self assert: ((board at:'d8') contents) equals: piece.
 	
 ]
