@@ -23,7 +23,8 @@ Class {
 		'movesLabel',
 		'moveCountLabel',
 		'moves',
-		'dsp'
+		'dsp',
+		'lastMove'
 	],
 	#category : 'Myg-Chess-Core',
 	#package : 'Myg-Chess-Core'
@@ -121,6 +122,11 @@ MyChessGame >> initializeFromFENGame: aFENGame [
 	self constraintsDo: [ :aLayoutConstraints |
 		aLayoutConstraints horizontal fitContent.
 		aLayoutConstraints vertical fitContent ]
+]
+
+{ #category : 'public' }
+MyChessGame >> lastMove [ 
+ ^ moves last 
 ]
 
 { #category : 'public' }

@@ -42,7 +42,7 @@ MyWhitePawn >> renderPieceOn: aSquare [
 { #category : 'accessing' }
 MyWhitePawn >> targetSquaresLegal: aBoolean [ 
 
-	| upSquare doubleUpSquare diagRightSquare diagLeftSquare leftSquare rightSquare possibleMoves downSquare|
+	| upSquare doubleUpSquare diagRightSquare diagLeftSquare leftSquare rightSquare possibleMoves downSquare ls|
 	"Récupère les cases voisines"
 	upSquare := self square up.
 	doubleUpSquare := upSquare ifNotNil: [ upSquare up ].
@@ -53,6 +53,7 @@ MyWhitePawn >> targetSquaresLegal: aBoolean [
 	diagLeftSquare := leftSquare ifNotNil: [ self square left up ].
 
 	possibleMoves := OrderedCollection new.
+
 
 	"Déplacement en avant d'une case"
 	upSquare hasPiece ifFalse: [ possibleMoves add: upSquare ].
@@ -73,13 +74,17 @@ MyWhitePawn >> targetSquaresLegal: aBoolean [
         diagRightSquare contents color ~= self color ]])
         ifTrue: [ possibleMoves add: diagRightSquare ].
 
-	"Capture en passant à gauche"
-	(self square file = $5 and: [
-		 leftSquare notNil and: [
-		 leftSquare hasPiece and: [
-				 leftSquare contents color ~= self color ] ]]) ifTrue: [
-		possibleMoves add: diagLeftSquare].
-	   (possibleMoves includes: diagLeftSquare) ifTrue: [ downSquare contents: nil.].
+"Capture en passant à gauche"
+(self square file = $5 and: [ 
+    leftSquare notNil and: [ 
+        leftSquare hasPiece and: [ 
+            leftSquare contents color ~= self color and: [ 
+                (self board game lastMove = '1. Pa5') or: [(self board game lastMove = '1. Pb5')
+	        ]]]]])ifTrue: [ 
+    "Faire quelque chose si le dernier mouvement correspond à un pion passant de 7 à 5." 
+    possibleMoves add: diagLeftSquare. 
+    (possibleMoves includes: diagLeftSquare) ifTrue: [ downSquare contents: nil. ].
+].
 	
 	
 	"Capture en passant à droite"
