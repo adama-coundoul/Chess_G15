@@ -42,7 +42,7 @@ MyWhitePawn >> renderPieceOn: aSquare [
 { #category : 'accessing' }
 MyWhitePawn >> targetSquaresLegal: aBoolean [ 
 
-	| upSquare doubleUpSquare diagRightSquare diagLeftSquare leftSquare rightSquare possibleMoves downSquare ls|
+	| upSquare doubleUpSquare diagRightSquare diagLeftSquare leftSquare rightSquare possibleMoves downSquare|
 	"Récupère les cases voisines"
 	upSquare := self square up.
 	doubleUpSquare := upSquare ifNotNil: [ upSquare up ].
