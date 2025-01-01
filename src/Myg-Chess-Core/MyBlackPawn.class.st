@@ -6,54 +6,83 @@ Class {
 }
 
 { #category : 'rendering' }
+MyBlackPawn >> diagLeftSquare [
+    ^ self square left ifNotNil: [ self square left down ].
+
+]
+
+{ #category : 'rendering' }
+MyBlackPawn >> diagRightSquare [
+    ^ self square right ifNotNil: [ self square right down ].
+]
+
+{ #category : 'rendering' }
+MyBlackPawn >> oneMove [
+    ^ self square down hasPiece ifFalse: [ self square down ] ifTrue: [ nil ].
+
+]
+
+{ #category : 'rendering' }
 MyBlackPawn >> renderPieceOn: aSquare [
 
 	^ aSquare renderBlackPawn
 ]
 
 { #category : 'rendering' }
-MyBlackPawn >> targetSquaresLegal: aBoolean [
+MyBlackPawn >> targetSquaresLegal: aBoolean [ 
 
-	| down1 down2 diagRightBlack diagLeftBlack leftSquare rightSquare targetSquares |
-	"Récupère les cases voisines"
-	down1 := self square down.
-	down2 := down1 down .
-	diagRightBlack := self square right ifNotNil: [ self square right down ].
-	diagLeftBlack := self square left ifNotNil: [ self square left down ].
-	leftSquare := self square left.
-	rightSquare := self square right.
+	|   diagRightSquare diagLeftSquare  possibleMoves |
 
-	targetSquares := OrderedCollection new.
+
+
+	possibleMoves := OrderedCollection new.
+
 
 	"Déplacement en avant d'une case"
-	down1 hasPiece ifFalse: [ targetSquares add: down1 ].
-		
+	possibleMoves add: self oneMove.
 	"Déplacement en avant de deux cases"
-	(self square file = $7 and: [
-		down1 hasPiece not and: [ down2 hasPiece not ] ])
-		ifTrue: [ targetSquares add: down2 ].
+   possibleMoves add: self twoMoves.
 
-	"Capture en diagonale gauche"
-	(diagLeftBlack hasPiece and: [
-			 diagLeftBlack contents color ~= self color ] ) ifTrue: [
-		targetSquares add: diagLeftBlack ].
+	"Capture en diagonale"
+    diagLeftSquare := self checkDiagonalCapture: self diagLeftSquare .
+    diagRightSquare := self checkDiagonalCapture: self diagRightSquare .
+    possibleMoves add: diagLeftSquare;
+               add: diagRightSquare.
 
-	"Capture en diagonale droite"
-	(diagRightBlack hasPiece and: [
-			 diagRightBlack contents color ~= self color ] ) ifTrue: [
-		targetSquares add: diagRightBlack ].
-
-	"Capture en passant à gauche"
-	(self square file = $4 and: [
-		 leftSquare hasPiece and: [
-				 leftSquare contents color ~= self color ] ]) ifTrue: [
-		targetSquares add: diagLeftBlack ].
-
-	"Capture en passant à droite"
-	(self square file = $4 and: [
+"Capture en passant à gauche
+(self square file = $5 and: [ 
+    leftSquare notNil and: [ 
+        leftSquare hasPiece and: [ 
+            leftSquare contents color ~= self color and: [ 
+                (self board game lastMove = '1. Pa5') or: [(self board game lastMove = '1. Pb5')
+	        ]]]]])ifTrue: [ 
+    Faire quelque chose si le dernier mouvement correspond à un pion passant de 7 à 5.
+    possibleMoves add: diagLeftSquare. 
+    (possibleMoves includes: diagLeftSquare) ifTrue: [ downSquare contents: nil. ].
+]."
+	
+	
+	"Capture en passant à droite
+	(self square file = $5 and: [
+		 rightSquare notNil and: [
 		 rightSquare hasPiece and: [
-				 rightSquare contents color ~= self color ] ] ) ifTrue: [
-		targetSquares add: diagRightBlack ].
+				 rightSquare contents color ~= self color ] ]] ) ifTrue: [
+		possibleMoves add: diagRightSquare ].
+	   (possibleMoves includes: diagRightSquare) ifTrue: [ downSquare contents: nil.]."
+	
+	
+	^ possibleMoves
+]
 
-	^ targetSquares
+{ #category : 'rendering' }
+MyBlackPawn >> twoMoves [
+    "Renvoie la case en avant de deux cases si le déplacement est valide, sinon nil."
+    | downSquare doubleDownSquare |
+    downSquare := self square down.
+    doubleDownSquare := downSquare ifNotNil: [ downSquare down ].
+    (self square file = $7 and: [
+        downSquare hasPiece not and: [
+            doubleDownSquare hasPiece not ] ])
+        ifTrue: [ ^ doubleDownSquare ].
+    ^ nil.
 ]
