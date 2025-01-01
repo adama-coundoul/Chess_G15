@@ -116,10 +116,10 @@ MyPawn >> promptForPromotion [
     choice := self showPromotionDialog.
     
     "Créer la nouvelle pièce selon le choix de l'utilisateur"
-    choice = 'Queen' ifTrue: [promotedPiece := self promoteToQueen].
-    choice = 'Rook' ifTrue: [promotedPiece := self promoteToRook ].
-    choice = 'Bishop' ifTrue: [promotedPiece := self promoteToBishop ].
-    choice = 'Knight' ifTrue: [promotedPiece := self promoteToKnight ].
+    choice = 1 ifTrue: [promotedPiece := self promoteToQueen].
+    choice = 2 ifTrue: [promotedPiece := self promoteToRook ].
+    choice = 3 ifTrue: [promotedPiece := self promoteToBishop ].
+    choice = 4 ifTrue: [promotedPiece := self promoteToKnight ].
     choice ifNil: [self error: 'Invalid choice'].
     
     ^ promotedPiece
@@ -134,36 +134,12 @@ MyPawn >> renderPieceOn: aSquare [
 
 { #category : 'as yet unclassified' }
 MyPawn >> showPromotionDialog [
-    | window chosenPiece |
-    chosenPiece := nil.
-    
-    window := SystemWindow new.
-    window setLabel: 'Choose promotion piece'.
-    
-    #('Queen' 'Rook' 'Bishop' 'Knight') do: [ :pieceName |
-        window addMorph: (
-            ToButton new
-                label: pieceName;
-                color: Color lightGray;
-                borderColor: Color black;
-                borderWidth: 2;
-                target: [ 
-                    chosenPiece := pieceName.
-                    window delete.
-                ];
-                actionSelector: #value
-        )
-    ].
-    
-    window extent: 200@250.
-    window openCenteredInWorld.
-    
-    [chosenPiece isNil] whileTrue: [
-        window world doOneCycle.
-        (Delay forMilliseconds: 50) wait.
-    ].
+    | chosenPiece |
+   chosenPiece := UIManager default chooseFrom: #('Queen' 'Rook' 'Bishop' 'Knight')
+                    title: 'Choose a piece for promotion'.
     
     ^ chosenPiece
+
 ]
 
 { #category : 'accessing' }
