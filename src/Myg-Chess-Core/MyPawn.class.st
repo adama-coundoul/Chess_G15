@@ -1,6 +1,9 @@
 Class {
 	#name : 'MyPawn',
 	#superclass : 'MyPiece',
+	#instVars : [
+		'enPassant'
+	],
 	#category : 'Myg-Chess-Core',
 	#package : 'Myg-Chess-Core'
 }
@@ -42,6 +45,12 @@ MyPawn >> id [
 	^ 'P'
 ]
 
+{ #category : 'path commands' }
+MyPawn >> initialize [ 
+        super initialize.
+		  enPassant := nil.
+]
+
 { #category : 'as yet unclassified' }
 MyPawn >> isOnLastRank: aSquare [ 
 
@@ -51,6 +60,11 @@ MyPawn >> isOnLastRank: aSquare [
 { #category : 'testing' }
 MyPawn >> isPawn [ 
 ^ true 
+]
+
+{ #category : 'accessing' }
+MyPawn >> isWhite [ 
+    ^ self color = Color white.
 ]
 
 { #category : 'accessing' }

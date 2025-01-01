@@ -6,6 +6,11 @@ Class {
 }
 
 { #category : 'rendering' }
+MyBlackPawn >> canCaptureEnPassant [
+	^ self square file = $4.
+]
+
+{ #category : 'rendering' }
 MyBlackPawn >> diagLeftSquare [
     ^ self square left ifNotNil: [ self square left down ].
 
@@ -14,6 +19,44 @@ MyBlackPawn >> diagLeftSquare [
 { #category : 'rendering' }
 MyBlackPawn >> diagRightSquare [
     ^ self square right ifNotNil: [ self square right down ].
+]
+
+{ #category : 'rendering' }
+MyBlackPawn >> enPassantCapture [ 
+    | enPassantMoves lastMove oppositePawnPosition capture |
+
+    enPassant ifNotNil: [ ^ OrderedCollection with: enPassant ].
+    enPassantMoves := OrderedCollection new.
+    lastMove := square board game lastMove.
+
+    lastMove ifNotNil: [
+        (lastMove lastPiece isPawn
+            and: [ (lastMove lastSquareFrom file asInteger - lastMove lastSquareTo file asInteger) abs = 2 ])ifTrue: [
+            self canCaptureEnPassant ifTrue: [
+            oppositePawnPosition := lastMove lastSquareTo .
+            (self square columnDifferenceWith: oppositePawnPosition) abs = 1 ifTrue: [
+            capture := oppositePawnPosition down.
+                    
+            enPassant := capture.
+            enPassantMoves add: capture.]]]].
+
+    ^ enPassantMoves.
+]
+
+{ #category : 'rendering' }
+MyBlackPawn >> moveTo: aSquare [ 
+
+	| enPassantSquare twoMoves |
+	enPassantSquare := (self enPassantCapture includes: aSquare)
+		                         ifTrue: [aSquare up ].
+	enPassantSquare ifNotNil: [ enPassantSquare emptyContents ].
+	twoMoves := aSquare = self twoMoves.
+	aSquare ~= square ifFalse: [ ^ self ].
+	super moveTo: aSquare.
+	enPassant := twoMoves
+		             ifTrue: [ aSquare ]
+		             ifFalse: [ nil ].
+
 ]
 
 { #category : 'rendering' }
@@ -29,49 +72,31 @@ MyBlackPawn >> renderPieceOn: aSquare [
 ]
 
 { #category : 'rendering' }
-MyBlackPawn >> targetSquaresLegal: aBoolean [ 
+MyBlackPawn >> targetSquaresLegal: aBoolean [
+    | possibleMoves diagLeftSquare diagRightSquare enPassantSquares |
+    
+    possibleMoves := OrderedCollection new.
+    
+    "L'avancement d'une seule ou deux cases"
+    self oneMove ifNotNil: [ possibleMoves add: self oneMove ].
+    self twoMoves ifNotNil: [ possibleMoves add: self twoMoves ].
+    
+    "Capture en diagonale"
+    diagLeftSquare := self checkDiagonalCapture: self diagLeftSquare.
+    diagRightSquare := self checkDiagonalCapture: self diagRightSquare.
+    diagLeftSquare ifNotNil: [ possibleMoves add: diagLeftSquare ].
+    diagRightSquare ifNotNil: [ possibleMoves add: diagRightSquare ].
+    
+    "Capture en passant"
+    enPassantSquares := self enPassantCapture.
+    enPassantSquares ifNotNil: [
+        enPassantSquares isCollection
+            ifTrue: [ possibleMoves addAll: enPassantSquares ]
+            ifFalse: [ possibleMoves add: enPassantSquares ]
+    ].
+    
+    ^ possibleMoves.
 
-	|   diagRightSquare diagLeftSquare  possibleMoves |
-
-
-
-	possibleMoves := OrderedCollection new.
-
-
-	"Déplacement en avant d'une case"
-	possibleMoves add: self oneMove.
-	"Déplacement en avant de deux cases"
-   possibleMoves add: self twoMoves.
-
-	"Capture en diagonale"
-    diagLeftSquare := self checkDiagonalCapture: self diagLeftSquare .
-    diagRightSquare := self checkDiagonalCapture: self diagRightSquare .
-    possibleMoves add: diagLeftSquare;
-               add: diagRightSquare.
-
-"Capture en passant à gauche
-(self square file = $5 and: [ 
-    leftSquare notNil and: [ 
-        leftSquare hasPiece and: [ 
-            leftSquare contents color ~= self color and: [ 
-                (self board game lastMove = '1. Pa5') or: [(self board game lastMove = '1. Pb5')
-	        ]]]]])ifTrue: [ 
-    Faire quelque chose si le dernier mouvement correspond à un pion passant de 7 à 5.
-    possibleMoves add: diagLeftSquare. 
-    (possibleMoves includes: diagLeftSquare) ifTrue: [ downSquare contents: nil. ].
-]."
-	
-	
-	"Capture en passant à droite
-	(self square file = $5 and: [
-		 rightSquare notNil and: [
-		 rightSquare hasPiece and: [
-				 rightSquare contents color ~= self color ] ]] ) ifTrue: [
-		possibleMoves add: diagRightSquare ].
-	   (possibleMoves includes: diagRightSquare) ifTrue: [ downSquare contents: nil.]."
-	
-	
-	^ possibleMoves
 ]
 
 { #category : 'rendering' }
