@@ -23,7 +23,8 @@ Class {
 		'movesLabel',
 		'moveCountLabel',
 		'moves',
-		'dsp'
+		'dsp',
+		'lastMove'
 	],
 	#category : 'Myg-Chess-Core',
 	#package : 'Myg-Chess-Core'
@@ -124,8 +125,18 @@ MyChessGame >> initializeFromFENGame: aFENGame [
 ]
 
 { #category : 'public' }
-MyChessGame >> move: piece to: square [
+MyChessGame >> lastMove [ 
+ ^ lastMove 
+]
 
+{ #category : 'public' }
+MyChessGame >> lastMove: aMove [ 
+  lastMove := aMove  
+]
+
+{ #category : 'public' }
+MyChessGame >> move: piece to: square [
+   	self recordLastMove: piece to: square.
 	piece moveToAutomaticVersion: square.
 	self recordMovementOf: piece to: square
 ]
@@ -160,6 +171,16 @@ MyChessGame >> play [
 			moveCount := moveCount + 1.
 			currentPlayer := whitePlayer ].
 	self checkForMate
+]
+
+{ #category : 'moves' }
+MyChessGame >> recordLastMove: aPiece to: aSquare [ 
+	| move |
+	move := MyMove new.
+	move lastPiece: aPiece.
+	move lastSquareFrom: aPiece square.
+	move lastSquareTo: aSquare.
+	self lastMove: move
 ]
 
 { #category : 'moves' }
