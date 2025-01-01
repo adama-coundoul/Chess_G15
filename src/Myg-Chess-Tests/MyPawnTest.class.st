@@ -62,12 +62,11 @@ MyPawnTest >> testInteractivePawnPromotion [
     board at: 'd7' put: pawn.
     self assert: ((board at:'d7') contents) equals: pawn .
     
-  
-    pawn class compile: 'promptForPromotion ^ MyWhiteRook new'.
+   pawn class compile: 'showPromotionDialog ^ 3'.
    
     pawn moveToInteractiveVersion: (board at: 'd8').
     
-   	self assert: ((board at:'d8') contents) class equals: MyWhiteRook .
+   	self assert: ((board at:'d8') contents) class equals: MyWhiteBishop .
     
    self assert: ((board at: 'd7') contents isNil).
 
@@ -102,7 +101,7 @@ MyPawnTest >> testNoInteractivePawnPromotionWhenNotInLastRank [
     self assert: ((board at:'d5') contents) equals: pawn .
     
   
-    pawn class compile: 'promptForPromotion ^ MyWhiteBishop new'.
+  pawn class compile: 'showPromotionDialog ^ 3'.
    
     pawn moveToInteractiveVersion: (board at: 'd6').
     

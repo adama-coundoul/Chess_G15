@@ -56,10 +56,6 @@ MyWhitePawn >> promoteToRook [
 ^ MyWhiteRook new . 
 ]
 
-{ #category : 'as yet unclassified' }
-MyWhitePawn >> promptForPromotion [ ^ MyWhiteBishop new
-]
-
 { #category : 'rendering' }
 MyWhitePawn >> renderPieceOn: aSquare [
 
