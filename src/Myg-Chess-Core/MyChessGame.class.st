@@ -126,12 +126,17 @@ MyChessGame >> initializeFromFENGame: aFENGame [
 
 { #category : 'public' }
 MyChessGame >> lastMove [ 
- ^ moves last 
+ ^ lastMove 
+]
+
+{ #category : 'public' }
+MyChessGame >> lastMove: aMove [ 
+  lastMove := aMove  
 ]
 
 { #category : 'public' }
 MyChessGame >> move: piece to: square [
-
+   	self recordLastMove: piece to: square.
 	piece moveTo: square.
 	self recordMovementOf: piece to: square
 ]
@@ -166,6 +171,16 @@ MyChessGame >> play [
 			moveCount := moveCount + 1.
 			currentPlayer := whitePlayer ].
 	self checkForMate
+]
+
+{ #category : 'public' }
+MyChessGame >> recordLastMove: aPiece to: aSquare [ 
+	| move |
+	move := MyMove new.
+	move lastPiece: aPiece.
+	move lastSquareFrom: aPiece square.
+	move lastSquareTo: aSquare.
+	self lastMove: move
 ]
 
 { #category : 'moves' }
