@@ -6,13 +6,8 @@ Class {
 }
 
 { #category : 'accessing' }
-MyWhitePawn >> checkDiagonalCapture: aSquare [  
-
-	^ (aSquare notNil and: [
-					aSquare hasPiece and: [
-						aSquare contents color ~= self color ]] )
-				ifTrue: [ aSquare ]
-				ifFalse: [ nil ].
+MyWhitePawn >> canCaptureEnPassant [
+	^ self square file = $5.
 ]
 
 { #category : 'accessing' }
@@ -24,6 +19,44 @@ MyWhitePawn >> diagLeftSquare [
 { #category : 'accessing' }
 MyWhitePawn >> diagRightSquare [
     ^ self square right ifNotNil: [ self square right up ].
+]
+
+{ #category : 'accessing' }
+MyWhitePawn >> enPassantCapture [ 
+    | enPassantMoves lastMove oppositePawnPosition capture |
+
+    enPassant ifNotNil: [ ^ OrderedCollection with: enPassant ].
+    enPassantMoves := OrderedCollection new.
+    lastMove := square board game lastMove.
+
+    lastMove ifNotNil: [
+        (lastMove lastPiece isPawn
+            and: [ (lastMove lastSquareFrom file asInteger - lastMove lastSquareTo file asInteger) abs = 2 ])ifTrue: [
+            self canCaptureEnPassant ifTrue: [
+            oppositePawnPosition := lastMove lastSquareTo .
+            (self square columnDifferenceWith: oppositePawnPosition) abs = 1 ifTrue: [
+            capture := oppositePawnPosition up.
+                    
+            enPassant := capture.
+            enPassantMoves add: capture.]]]].
+
+    ^ enPassantMoves.
+]
+
+{ #category : 'as yet unclassified' }
+MyWhitePawn >> moveTo: aSquare [ 
+
+	| enPassantSquare twoMoves |
+	enPassantSquare := (self enPassantCapture includes: aSquare)
+		                         ifTrue: [aSquare down ].
+	enPassantSquare ifNotNil: [ enPassantSquare emptyContents ].
+	twoMoves := aSquare = self twoMoves.
+	aSquare ~= square ifFalse: [ ^ self ].
+	super moveTo: aSquare.
+	enPassant := twoMoves
+		             ifTrue: [ aSquare ]
+		             ifFalse: [ nil ].
+
 ]
 
 { #category : 'accessing' }
@@ -57,7 +90,7 @@ MyWhitePawn >> promoteToRook [
 ]
 
 { #category : 'as yet unclassified' }
-MyWhitePawn >> promptForPromotion [ ^ MyWhiteBishop new
+MyWhitePawn >> promptForPromotion [ ^ MyWhiteRook new
 ]
 
 { #category : 'rendering' }
@@ -67,49 +100,31 @@ MyWhitePawn >> renderPieceOn: aSquare [
 ]
 
 { #category : 'accessing' }
-MyWhitePawn >> targetSquaresLegal: aBoolean [ 
+MyWhitePawn >> targetSquaresLegal: aBoolean [
+    | possibleMoves diagLeftSquare diagRightSquare enPassantSquares |
+    
+    possibleMoves := OrderedCollection new.
+    
+    "L'avancement d'une seule ou deux cases"
+    self oneMove ifNotNil: [ possibleMoves add: self oneMove ].
+    self twoMoves ifNotNil: [ possibleMoves add: self twoMoves ].
+    
+    "Capture en diagonale"
+    diagLeftSquare := self checkDiagonalCapture: self diagLeftSquare.
+    diagRightSquare := self checkDiagonalCapture: self diagRightSquare.
+    diagLeftSquare ifNotNil: [ possibleMoves add: diagLeftSquare ].
+    diagRightSquare ifNotNil: [ possibleMoves add: diagRightSquare ].
+    
+    "Capture en passant"
+    enPassantSquares := self enPassantCapture.
+    enPassantSquares ifNotNil: [
+        enPassantSquares isCollection
+            ifTrue: [ possibleMoves addAll: enPassantSquares ]
+            ifFalse: [ possibleMoves add: enPassantSquares ]
+    ].
+    
+    ^ possibleMoves.
 
-	|   diagRightSquare diagLeftSquare  possibleMoves |
-
-
-
-	possibleMoves := OrderedCollection new.
-
-
-	"Déplacement en avant d'une case"
-	possibleMoves add: self oneMove.
-	"Déplacement en avant de deux cases"
-   possibleMoves add: self twoMoves.
-
-	"Capture en diagonale"
-    diagLeftSquare := self checkDiagonalCapture: self diagLeftSquare .
-    diagRightSquare := self checkDiagonalCapture: self diagRightSquare .
-    possibleMoves add: diagLeftSquare;
-               add: diagRightSquare.
-
-"Capture en passant à gauche
-(self square file = $5 and: [ 
-    leftSquare notNil and: [ 
-        leftSquare hasPiece and: [ 
-            leftSquare contents color ~= self color and: [ 
-                (self board game lastMove = '1. Pa5') or: [(self board game lastMove = '1. Pb5')
-	        ]]]]])ifTrue: [ 
-    Faire quelque chose si le dernier mouvement correspond à un pion passant de 7 à 5.
-    possibleMoves add: diagLeftSquare. 
-    (possibleMoves includes: diagLeftSquare) ifTrue: [ downSquare contents: nil. ].
-]."
-	
-	
-	"Capture en passant à droite
-	(self square file = $5 and: [
-		 rightSquare notNil and: [
-		 rightSquare hasPiece and: [
-				 rightSquare contents color ~= self color ] ]] ) ifTrue: [
-		possibleMoves add: diagRightSquare ].
-	   (possibleMoves includes: diagRightSquare) ifTrue: [ downSquare contents: nil.]."
-	
-	
-	^ possibleMoves
 ]
 
 { #category : 'accessing' }
