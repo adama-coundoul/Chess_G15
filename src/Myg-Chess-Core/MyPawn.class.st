@@ -24,6 +24,16 @@ MyPawn >> checkDiagonalCapture: aSquare [
 ]
 
 { #category : 'path commands' }
+MyPawn >> diagLeftSquare [
+ ^self subclassResponsibility 
+]
+
+{ #category : 'path commands' }
+MyPawn >> diagRightSquare [
+ ^self subclassResponsibility 
+]
+
+{ #category : 'path commands' }
 MyPawn >> enPassantCapture [ 
     | enPassantMoves lastMove oppositePawnPosition capture |
 
@@ -149,6 +159,11 @@ MyPawn >> moveToInteractiveVersion: aSquare [
 ]
 
 { #category : 'accessing' }
+MyPawn >> oneMove [ 
+ ^ self subclassResponsibility 
+]
+
+{ #category : 'accessing' }
 MyPawn >> promoteToBishop [
     "Transforme le pion en une reine de la même couleur."
     ^ self subclassResponsibility 
@@ -207,7 +222,30 @@ MyPawn >> showPromotionDialog [
 
 { #category : 'accessing' }
 MyPawn >> targetSquaresLegal: aBoolean [
-   ^ self subclassResponsibility 
+    | possibleMoves diagLeftSquare diagRightSquare enPassantSquares |
+    
+    possibleMoves := OrderedCollection new.
+    
+    "L'avancement d'une seule ou deux cases"
+    self oneMove ifNotNil: [ possibleMoves add: self oneMove ].
+    self twoMoves ifNotNil: [ possibleMoves add: self twoMoves ].
+    
+    "Capture en diagonale"
+    diagLeftSquare := self checkDiagonalCapture: self diagLeftSquare.
+    diagRightSquare := self checkDiagonalCapture: self diagRightSquare.
+    diagLeftSquare ifNotNil: [ possibleMoves add: diagLeftSquare ].
+    diagRightSquare ifNotNil: [ possibleMoves add: diagRightSquare ].
+    
+    "Capture en passant"
+    enPassantSquares := self enPassantCapture.
+    enPassantSquares ifNotNil: [
+        enPassantSquares isCollection
+            ifTrue: [ possibleMoves addAll: enPassantSquares ]
+            ifFalse: [ possibleMoves add: enPassantSquares ]
+    ].
+    
+    ^ possibleMoves.
+
 ]
 
 { #category : 'accessing' }

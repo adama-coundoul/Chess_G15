@@ -22,44 +22,6 @@ MyWhitePawn >> diagRightSquare [
 ]
 
 { #category : 'accessing' }
-MyWhitePawn >> enPassantCapture [ 
-    | enPassantMoves lastMove oppositePawnPosition capture |
-
-    enPassant ifNotNil: [ ^ OrderedCollection with: enPassant ].
-    enPassantMoves := OrderedCollection new.
-    lastMove := square board game lastMove.
-
-    lastMove ifNotNil: [
-        (lastMove lastPiece isPawn
-            and: [ (lastMove lastSquareFrom file asInteger - lastMove lastSquareTo file asInteger) abs = 2 ])ifTrue: [
-            self canCaptureEnPassant ifTrue: [
-            oppositePawnPosition := lastMove lastSquareTo .
-            (self square columnDifferenceWith: oppositePawnPosition) abs = 1 ifTrue: [
-            capture := oppositePawnPosition up.
-                    
-            enPassant := capture.
-            enPassantMoves add: capture.]]]].
-
-    ^ enPassantMoves.
-]
-
-{ #category : 'as yet unclassified' }
-MyWhitePawn >> moveTo: aSquare [ 
-
-	| enPassantSquare twoMoves |
-	enPassantSquare := (self enPassantCapture includes: aSquare)
-		                         ifTrue: [aSquare down ].
-	enPassantSquare ifNotNil: [ enPassantSquare emptyContents ].
-	twoMoves := aSquare = self twoMoves.
-	aSquare ~= square ifFalse: [ ^ self ].
-	super moveTo: aSquare.
-	enPassant := twoMoves
-		             ifTrue: [ aSquare ]
-		             ifFalse: [ nil ].
-
-]
-
-{ #category : 'accessing' }
 MyWhitePawn >> oneMove [
     ^ self square up hasPiece ifFalse: [ self square up ] ifTrue: [ nil ].
 
@@ -97,34 +59,6 @@ MyWhitePawn >> renderPieceOn: aSquare [
 
 { #category : 'as yet unclassified' }
 MyWhitePawn >> showPromotionDialog [ ^ 3
-]
-
-{ #category : 'accessing' }
-MyWhitePawn >> targetSquaresLegal: aBoolean [
-    | possibleMoves diagLeftSquare diagRightSquare enPassantSquares |
-    
-    possibleMoves := OrderedCollection new.
-    
-    "L'avancement d'une seule ou deux cases"
-    self oneMove ifNotNil: [ possibleMoves add: self oneMove ].
-    self twoMoves ifNotNil: [ possibleMoves add: self twoMoves ].
-    
-    "Capture en diagonale"
-    diagLeftSquare := self checkDiagonalCapture: self diagLeftSquare.
-    diagRightSquare := self checkDiagonalCapture: self diagRightSquare.
-    diagLeftSquare ifNotNil: [ possibleMoves add: diagLeftSquare ].
-    diagRightSquare ifNotNil: [ possibleMoves add: diagRightSquare ].
-    
-    "Capture en passant"
-    enPassantSquares := self enPassantCapture.
-    enPassantSquares ifNotNil: [
-        enPassantSquares isCollection
-            ifTrue: [ possibleMoves addAll: enPassantSquares ]
-            ifFalse: [ possibleMoves add: enPassantSquares ]
-    ].
-    
-    ^ possibleMoves.
-
 ]
 
 { #category : 'accessing' }
