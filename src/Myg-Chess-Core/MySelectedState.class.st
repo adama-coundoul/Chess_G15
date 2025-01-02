@@ -31,15 +31,13 @@ MySelectedState >> board: anObject [
 ]
 
 { #category : 'events' }
-MySelectedState >> clickOn: aMyChessSquare [
+MySelectedState >> clickOn: aMyChessSquare [ 
 	"We should only move if it's legal but..."
 
 	selection unselect.
 	selection contents ifNotNil: [
 		board unhighLightTargets: selection contents targetSquares.
-		(selection contents isPawn )
-		ifTrue: [ board game moveInteractive: selection contents to: aMyChessSquare  ] 
-		ifFalse: [board game move: selection contents to: aMyChessSquare ]].
+		board game move: selection contents to: aMyChessSquare ].
 
 	^ MyUnselectedState board: board
 ]

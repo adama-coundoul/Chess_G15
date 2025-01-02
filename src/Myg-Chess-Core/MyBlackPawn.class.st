@@ -22,44 +22,6 @@ MyBlackPawn >> diagRightSquare [
 ]
 
 { #category : 'rendering' }
-MyBlackPawn >> enPassantCapture [ 
-    | enPassantMoves lastMove oppositePawnPosition capture |
-
-    enPassant ifNotNil: [ ^ OrderedCollection with: enPassant ].
-    enPassantMoves := OrderedCollection new.
-    lastMove := square board game lastMove.
-
-    lastMove ifNotNil: [
-        (lastMove lastPiece isPawn
-            and: [ (lastMove lastSquareFrom file asInteger - lastMove lastSquareTo file asInteger) abs = 2 ])ifTrue: [
-            self canCaptureEnPassant ifTrue: [
-            oppositePawnPosition := lastMove lastSquareTo .
-            (self square columnDifferenceWith: oppositePawnPosition) abs = 1 ifTrue: [
-            capture := oppositePawnPosition down.
-                    
-            enPassant := capture.
-            enPassantMoves add: capture.]]]].
-
-    ^ enPassantMoves.
-]
-
-{ #category : 'rendering' }
-MyBlackPawn >> moveTo: aSquare [ 
-
-	| enPassantSquare twoMoves |
-	enPassantSquare := (self enPassantCapture includes: aSquare)
-		                         ifTrue: [aSquare up ].
-	enPassantSquare ifNotNil: [ enPassantSquare emptyContents ].
-	twoMoves := aSquare = self twoMoves.
-	aSquare ~= square ifFalse: [ ^ self ].
-	super moveTo: aSquare.
-	enPassant := twoMoves
-		             ifTrue: [ aSquare ]
-		             ifFalse: [ nil ].
-
-]
-
-{ #category : 'rendering' }
 MyBlackPawn >> oneMove [
     ^ self square down hasPiece ifFalse: [ self square down ] ifTrue: [ nil ].
 

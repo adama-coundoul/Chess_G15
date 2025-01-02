@@ -69,73 +69,25 @@ MyPawn >> isWhite [
     ^ self color = Color white.
 ]
 
-{ #category : 'path commands' }
-MyPawn >> moveToAutomaticVersion: aSquare [ 
-        | enPassantSquare twoMoves |
-    (self legalTargetSquares includes: aSquare) ifFalse: [ ^ self ].
+{ #category : 'rendering' }
+MyPawn >> moveTo: aSquare [ 
 
-    enPassantSquare := (self enPassantCapture includes: aSquare)
-        ifTrue: [
-            self isWhite
-                ifTrue: [ aSquare down ]
-                ifFalse: [ aSquare up ]
-        ].
-    enPassantSquare ifNotNil: [ enPassantSquare emptyContents ].
-    twoMoves := aSquare = self twoMoves.
-
-    "Vide la case actuelle et met à jour le pion"
-    square emptyContents.
-    square := aSquare.
-
-    (self isOnLastRank: square)
-        ifTrue: [
-            | newQueen |
-            newQueen := self promoteToQueen.
-            aSquare contents: newQueen.
-            newQueen square: aSquare.
-        ]
-        ifFalse: [
-            aSquare contents: self
-        ].
-
-    enPassant := twoMoves
-        ifTrue: [ aSquare ]
-        ifFalse: [ nil ].
-
-
-]
-
-{ #category : 'path commands' }
-MyPawn >> moveToInteractiveVersion: aSquare [ 
-    | promotedPiece enPassantSquare twoMoves |
-
-    (self legalTargetSquares includes: aSquare) ifFalse: [ ^ self ].
-
-    enPassantSquare := (self enPassantCapture includes: aSquare)
-        ifTrue: [
-            self isWhite 
-                ifTrue: [ aSquare down ] 
-                ifFalse: [ aSquare up ]
-        ].
-    enPassantSquare ifNotNil: [ enPassantSquare emptyContents ].
-
-    twoMoves := aSquare = self twoMoves.
-
-    aSquare ~= square ifFalse: [ ^ self ].
-
-    square emptyContents.
-
-    square := aSquare.
-
-    (self isOnLastRank: square) 
-        ifTrue: [
-            promotedPiece := self promptForPromotion.
-            square contents: promotedPiece.
-            promotedPiece square: aSquare.
-        ]
-        ifFalse: [
-            aSquare contents: self
-        ].
+	| enPassantSquare twoMoves |
+   enPassantSquare := (self enPassantCapture includes: aSquare) 
+    ifTrue: [
+        self isWhite 
+            ifTrue: [aSquare down] 
+            ifFalse: [aSquare up]
+    ].
+   enPassantSquare ifNotNil: [
+    enPassantSquare hasPiece ifTrue: [enPassantSquare emptyContents].
+    ].
+	twoMoves := aSquare = self twoMoves.
+	aSquare ~= square ifFalse: [ ^ self ].
+	super moveTo: aSquare.
+	enPassant := twoMoves
+		             ifTrue: [ aSquare ]
+		             ifFalse: [ nil ].
 
 ]
 
