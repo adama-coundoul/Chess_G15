@@ -95,6 +95,10 @@ MyWhitePawn >> renderPieceOn: aSquare [
 	^ aSquare renderWhitePawn
 ]
 
+{ #category : 'as yet unclassified' }
+MyWhitePawn >> showPromotionDialog [ ^ 3
+]
+
 { #category : 'accessing' }
 MyWhitePawn >> targetSquaresLegal: aBoolean [
     | possibleMoves diagLeftSquare diagRightSquare enPassantSquares |
