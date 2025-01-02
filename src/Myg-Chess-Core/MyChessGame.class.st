@@ -143,14 +143,14 @@ MyChessGame >> move: piece to: square [
 
 { #category : 'public' }
 MyChessGame >> moveAutomatic: piece to: square [
-
+   	self recordLastMove: piece to: square.
 	piece moveToAutomaticVersion: square.
 	self recordMovementOf: piece to: square
 ]
 
 { #category : 'public' }
 MyChessGame >> moveInteractive: piece to: square [
-
+   	self recordLastMove: piece to: square.
 	piece moveToInteractiveVersion: square.
 	self recordMovementOf: piece to: square
 ]
