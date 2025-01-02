@@ -6,6 +6,23 @@ Class {
 }
 
 { #category : 'rendering' }
+MyBlackPawn >> diagLeftSquare [
+    ^ self square left ifNotNil: [ self square left down ].
+
+]
+
+{ #category : 'rendering' }
+MyBlackPawn >> diagRightSquare [
+    ^ self square right ifNotNil: [ self square right down ].
+]
+
+{ #category : 'rendering' }
+MyBlackPawn >> oneMove [
+    ^ self square down hasPiece ifFalse: [ self square down ] ifTrue: [ nil ].
+
+]
+
+{ #category : 'rendering' }
 MyBlackPawn >> renderPieceOn: aSquare [
 
 	^ aSquare renderBlackPawn

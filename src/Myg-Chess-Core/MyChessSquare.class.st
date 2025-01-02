@@ -81,6 +81,12 @@ MyChessSquare >> column [
 ]
 
 { #category : 'accessing' }
+MyChessSquare >> columnDifferenceWith: anotherSquare [
+    ^ self column asciiValue - anotherSquare column asciiValue
+
+]
+
+{ #category : 'accessing' }
 MyChessSquare >> contents [
 	^ contents
 ]

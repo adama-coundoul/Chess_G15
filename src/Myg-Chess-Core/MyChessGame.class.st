@@ -125,21 +125,21 @@ MyChessGame >> initializeFromFENGame: aFENGame [
 
 { #category : 'public' }
 MyChessGame >> move: piece to: square [
-
+   	self recordLastMove: piece to: square.
 	piece moveToAutomaticVersion: square.
 	self recordMovementOf: piece to: square
 ]
 
 { #category : 'public' }
 MyChessGame >> moveAutomatic: piece to: square [
-
+   	self recordLastMove: piece to: square.
 	piece moveToAutomaticVersion: square.
 	self recordMovementOf: piece to: square
 ]
 
 { #category : 'public' }
 MyChessGame >> moveInteractive: piece to: square [
-
+   	self recordLastMove: piece to: square.
 	piece moveToInteractiveVersion: square.
 	self recordMovementOf: piece to: square
 ]
@@ -160,6 +160,16 @@ MyChessGame >> play [
 			moveCount := moveCount + 1.
 			currentPlayer := whitePlayer ].
 	self checkForMate
+]
+
+{ #category : 'public' }
+MyChessGame >> recordLastMove: aPiece to: aSquare [ 
+	| move |
+	move := MyMove new.
+	move lastPiece: aPiece.
+	move lastSquareFrom: aPiece square.
+	move lastSquareTo: aSquare.
+	self lastMove: move
 ]
 
 { #category : 'moves' }

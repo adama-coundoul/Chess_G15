@@ -5,6 +5,16 @@ Class {
 	#package : 'Myg-Chess-Core'
 }
 
+{ #category : 'accessing' }
+MyPawn >> checkDiagonalCapture: aSquare [  
+
+	^ (aSquare notNil and: [
+					aSquare hasPiece and: [
+						aSquare contents color ~= self color ]] )
+				ifTrue: [ aSquare ]
+				ifFalse: [ nil ].
+]
+
 { #category : 'as yet unclassified' }
 MyPawn >> createPromotionDialog [
     | dialog layout |
