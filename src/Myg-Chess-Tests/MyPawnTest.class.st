@@ -10,6 +10,7 @@ MyPawnTest >> testAutomaticPawnPromotion [
 
 | pawn board |
 	board := MyChessBoard empty.
+	board game: MyChessGame freshGame.
 	board at: 'd7' put: (pawn := MyWhitePawn new).
 	
 
@@ -25,11 +26,38 @@ MyPawnTest >> testId [
 ]
 
 { #category : 'tests' }
+MyPawnTest >> testInitialTwoMoves [
+ 
+    | pawnWhite movePawnWhite pawnBlack movePawnBlack board |  
+    board := MyChessBoard empty. 
+    board game: MyChessGame freshGame.
+
+    board at: 'e2' put: (pawnWhite := MyWhitePawn new).  
+    board at: 'e7' put: (pawnBlack := MyBlackPawn new). 
+    
+	 movePawnWhite := pawnWhite targetSquares. 
+    movePawnBlack := pawnBlack targetSquares. 
+
+    self assertCollection: movePawnWhite 
+        includesAll: 
+            (#( e3 e4) collect: [ :name | 
+                board at: name ]).
+
+
+    self assertCollection: movePawnBlack 
+        includesAll: 
+            (#( e6 e5) collect: [ :name | 
+                board at: name ]).
+
+]
+
+{ #category : 'tests' }
 MyPawnTest >> testInteractivePawnPromotion [
     | pawn board |
     
    
     board := MyChessBoard empty.
+    board game: MyChessGame freshGame.
     pawn := MyWhitePawn new.
     board at: 'd7' put: pawn.
     self assert: ((board at:'d7') contents) equals: pawn .
@@ -53,6 +81,7 @@ MyPawnTest >> testNoAutomaticPawnPromotionWhenNotInLastRank [
 
 | pawn board |
 	board := MyChessBoard empty.
+	board game: MyChessGame freshGame.
 	board at: 'd6' put: (pawn := MyWhitePawn new).
 	
 
@@ -68,6 +97,7 @@ MyPawnTest >> testNoInteractivePawnPromotionWhenNotInLastRank [
     
    
     board := MyChessBoard empty.
+    board game: MyChessGame freshGame.
     pawn := MyWhitePawn new.
     board at: 'd5' put: pawn.
     self assert: ((board at:'d5') contents) equals: pawn .
@@ -101,69 +131,60 @@ MyPawnTest >> testNoPromotionWhenNotPawn [
 ]
 
 { #category : 'tests' }
-MyPawnTest >> testOneMove [
-
-	| board pawnWhite pawnBlack moveWhite moveBlack |
-	board := MyChessBoard empty.
-
-	board at: 'e2' put: (pawnWhite := MyWhitePawn new).
-	board at: 'e7' put: (pawnBlack := MyBlackPawn new).
-
-	moveWhite := pawnWhite oneMove.
-	moveBlack := pawnBlack oneMove.
-	self assert: moveWhite equals: (board at: 'e3').
-	self assert: moveBlack equals: (board at: 'e6')
-]
-
-{ #category : 'tests' }
 MyPawnTest >> testPawnCaptureMove [
-
-	| board whitePawn blackPawnLeft blackPawnRight moveLeft moveRight |
-
-	board := MyChessBoard empty.
-
-	board at: 'e5' put: (whitePawn := MyWhitePawn new).
-	board at: 'd6' put: (blackPawnLeft := MyBlackPawn new). 
-	board at: 'f6' put: (blackPawnRight := MyBlackPawn new). 
-
-	moveLeft := whitePawn checkDiagonalCapture: whitePawn square left up.
-	self assert: moveLeft equals: (board at: 'd6').
-	moveRight := whitePawn checkDiagonalCapture: whitePawn square right up.
-	self assert: moveRight equals: (board at: 'f6').
-
-]
-
-{ #category : 'tests' }
-MyPawnTest >> testPawnMoveWithObstacle [
-    | board pawnWhite pawnBlack moveWhite moveBlack obstacleSquare |
-    
+    | pawn capturedPawn board movePawnWhite |
     board := MyChessBoard empty.
+    board game: MyChessGame freshGame.
+    board at: 'e4' put: (pawn := MyWhitePawn new).
+    board at: 'd5' put: (capturedPawn := MyBlackPawn new).
 
-    board at: 'e2' put: (pawnWhite := MyWhitePawn new).
-    board at: 'e7' put: (pawnBlack := MyBlackPawn new).
+    movePawnWhite := pawn targetSquares.
 
-    board at: 'e3' put: (obstacleSquare := MyBlackPawn new).
-    board at: 'e6' put: (obstacleSquare := MyWhitePawn new). 
-
-    moveWhite := pawnWhite oneMove.
-    moveBlack := pawnBlack oneMove.
-
-    self assert: moveWhite isNil. 
-    self assert: moveBlack isNil. 
+    self assertCollection: movePawnWhite 
+        includesAll: 
+            (#( e5) collect: [ :name | 
+                board at: name ]).
 
 ]
 
 { #category : 'tests' }
-MyPawnTest >> testTwoMoves [
+MyPawnTest >> testPawnMoveWithOponentObstacle [  
 
-	| board pawnWhite pawnBlack moveWhite moveBlack |
-	board := MyChessBoard empty.
+    | pawn squares board |
+    board := MyChessBoard empty.
+	 board game: MyChessGame freshGame.
+    board at: 'e4' put: (pawn := MyWhitePawn new).
 
-	board at: 'e2' put: (pawnWhite := MyWhitePawn new).
-	board at: 'e7' put: (pawnBlack := MyBlackPawn new).
+    board at: 'e5' put: MyBlackPawn new.
+    squares := pawn targetSquares.
 
-	moveWhite := pawnWhite twoMoves.
-	moveBlack := pawnBlack twoMoves.
-	self assert: moveWhite equals: (board at: 'e4').
-	self assert: moveBlack equals: (board at: 'e5')
+    "le pion ne peut pas avancer vers e5 car la case est occupée par le pion noir"
+    self assertCollection: squares 
+        includesAll: 
+            (#( ) collect: [ :name | 
+                board at: name ]).
+]
+
+{ #category : 'tests' }
+MyPawnTest >> testSimpleOneMove [ 
+    | pawnWhite movePawnWhite pawnBlack movePawnBlack board |  
+    board := MyChessBoard empty. 
+    board game: MyChessGame freshGame.
+
+    board at: 'e4' put: (pawnWhite := MyWhitePawn new).  
+    board at: 'e3' put: (pawnBlack := MyBlackPawn new). 
+    
+	 movePawnWhite := pawnWhite targetSquares. 
+    movePawnBlack := pawnBlack targetSquares. 
+
+    self assertCollection: movePawnWhite 
+        includesAll: 
+            (#( e5) collect: [ :name | 
+                board at: name ]).
+
+
+    self assertCollection: movePawnBlack 
+        includesAll: 
+            (#( e2) collect: [ :name | 
+                board at: name ]).
 ]
