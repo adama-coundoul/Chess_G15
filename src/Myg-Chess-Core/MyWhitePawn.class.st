@@ -57,10 +57,6 @@ MyWhitePawn >> renderPieceOn: aSquare [
 	^ aSquare renderWhitePawn
 ]
 
-{ #category : 'as yet unclassified' }
-MyWhitePawn >> showPromotionDialog [ ^ 3
-]
-
 { #category : 'accessing' }
 MyWhitePawn >> twoMoves [
     "Renvoie la case en avant de deux cases si le déplacement est valide, sinon nil."

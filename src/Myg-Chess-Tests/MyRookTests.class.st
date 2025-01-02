@@ -16,7 +16,7 @@ MyRookTests >> testMoves [
 
 	| rook squares board |
 	board := MyChessBoard empty.
-	board at: 'e4' put: (rook := MyRook white).
+	board at: 'e4' put: (rook := MyWhiteRook new).
 
 	squares := rook targetSquares.
 	self
@@ -31,12 +31,12 @@ MyRookTests >> testMovesWithOponentObstacle [
 
 	| bishop squares board |
 	board := MyChessBoard empty.
-	board at: 'e4' put: (bishop := MyRook white).
+	board at: 'e4' put: (bishop := MyWhiteRook new).
 
 	"Rooks don't jump above pieces"
 	"But they eat pieces of the other color"
 	"Let's put a black obstacle on g4, blocking the f rank"
-	board at: 'g4' put: MyRook black.
+	board at: 'g4' put: MyBlackRook new.
 
 	squares := bishop targetSquares.
 	self
@@ -51,12 +51,12 @@ MyRookTests >> testMovesWithSameColorObstacle [
 
 	| bishop squares board |
 	board := MyChessBoard empty.
-	board at: 'e4' put: (bishop := MyRook white).
+	board at: 'e4' put: (bishop := MyWhiteRook new).
 
 	"Rooks don't jump above pieces"
 	"And they don't eat pieces of the same color either"
 	"Let's put a white obstacle on g4, blocking the f rank"
-	board at: 'g4' put: MyRook black.
+	board at: 'g4' put: MyBlackRook new.
 
 	squares := bishop targetSquares.
 	self

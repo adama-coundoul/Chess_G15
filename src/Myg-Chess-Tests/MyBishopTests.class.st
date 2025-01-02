@@ -16,7 +16,7 @@ MyBishopTests >> testMoves [
 
 	| bishop squares board |
 	board := MyChessBoard empty.
-	board at: 'e4' put: (bishop := MyBishop white).
+	board at: 'e4' put: (bishop := MyWhiteBishop new).
 
 	squares := bishop targetSquares.
 	self
@@ -31,12 +31,12 @@ MyBishopTests >> testMovesWithOponentObstacle [
 
 	| bishop squares board |
 	board := MyChessBoard empty.
-	board at: 'e4' put: (bishop := MyBishop white).
+	board at: 'e4' put: (bishop := MyWhiteBishop new).
 
 	"Bishops don't jump above pieces"
 	"But they eat pieces of the other color"
 	"Let's put a black obstacle on g6, blocking the f5-h7 diagonal"
-	board at: 'g6' put: MyBishop black.
+	board at: 'g6' put: MyBlackBishop new.
 
 	squares := bishop targetSquares.
 	self
@@ -51,12 +51,12 @@ MyBishopTests >> testMovesWithSameColorObstacle [
 
 	| bishop squares board |
 	board := MyChessBoard empty.
-	board at: 'e4' put: (bishop := MyBishop white).
+	board at: 'e4' put: (bishop := MyWhiteBishop new).
 
 	"Bishops don't jump above pieces"
 	"And they don't eat pieces of the same color either"
 	"Let's put a white obstacle on g6, blocking the f5-h7 diagonal"
-	board at: 'g6' put: MyBishop white.
+	board at: 'g6' put: MyWhiteBishop new.
 
 	squares := bishop targetSquares.
 	self

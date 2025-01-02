@@ -12,7 +12,7 @@ MyFENTest >> testParseBlackPawn [
 	parser := MyFENParser forString: 'p'.
 	piece := parser parsePiece.
 	
-	self assert: piece equals: 'Black pawn'
+	self assert: piece equals: 'Black BlackPawn'
 ]
 
 { #category : 'tests' }
@@ -23,13 +23,13 @@ MyFENTest >> testParseRank [
 	rank := parser parseRank.
 	
 	self assert: rank asArray equals: #(
-		'Black pawn'
+		'Black BlackPawn'
 		$2
-		'Black rook'
-		'White queen'
-		'Black king'
-		'Black knight'
-		'White bishop'
+		'Black BlackRook'
+		'White WhiteQueen'
+		'Black BlackKing'
+		'Black BlackKnight'
+		'White WhiteBishop'
 	)
 ]
 
@@ -40,5 +40,5 @@ MyFENTest >> testParseWhitePawn [
 	parser := MyFENParser forString: 'P'.
 	piece := parser parsePiece.
 	
-	self assert: piece equals: 'White pawn'
+	self assert: piece equals: 'White WhitePawn'
 ]
