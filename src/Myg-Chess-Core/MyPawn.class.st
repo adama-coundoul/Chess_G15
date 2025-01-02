@@ -23,6 +23,16 @@ MyPawn >> checkDiagonalCapture: aSquare [
 				ifFalse: [ nil ].
 ]
 
+{ #category : 'accessing' }
+MyPawn >> diagLeftSquare [
+ ^ self subclassResponsibility 
+]
+
+{ #category : 'accessing' }
+MyPawn >> diagRightSquare [
+ ^ self subclassResponsibility 
+]
+
 { #category : 'path commands' }
 MyPawn >> enPassantCapture [ 
     | enPassantMoves lastMove oppositePawnPosition capture |
@@ -91,6 +101,11 @@ MyPawn >> moveTo: aSquare [
 
 ]
 
+{ #category : 'as yet unclassified' }
+MyPawn >> oneMove [ 
+ ^ self subclassResponsibility 
+]
+
 { #category : 'rendering' }
 MyPawn >> renderPieceOn: aSquare [
 
@@ -100,7 +115,30 @@ MyPawn >> renderPieceOn: aSquare [
 
 { #category : 'accessing' }
 MyPawn >> targetSquaresLegal: aBoolean [
-   ^ self subclassResponsibility 
+    | possibleMoves diagLeftSquare diagRightSquare enPassantSquares |
+    
+    possibleMoves := OrderedCollection new.
+    
+    "L'avancement d'une seule ou deux cases"
+    self oneMove ifNotNil: [ possibleMoves add: self oneMove ].
+    self twoMoves ifNotNil: [ possibleMoves add: self twoMoves ].
+    
+    "Capture en diagonale"
+    diagLeftSquare := self checkDiagonalCapture: self diagLeftSquare.
+    diagRightSquare := self checkDiagonalCapture: self diagRightSquare.
+    diagLeftSquare ifNotNil: [ possibleMoves add: diagLeftSquare ].
+    diagRightSquare ifNotNil: [ possibleMoves add: diagRightSquare ].
+    
+    "Capture en passant"
+    enPassantSquares := self enPassantCapture.
+    enPassantSquares ifNotNil: [
+        enPassantSquares isCollection
+            ifTrue: [ possibleMoves addAll: enPassantSquares ]
+            ifFalse: [ possibleMoves add: enPassantSquares ]
+    ].
+    
+    ^ possibleMoves.
+
 ]
 
 { #category : 'as yet unclassified' }

@@ -34,34 +34,6 @@ MyWhitePawn >> renderPieceOn: aSquare [
 ]
 
 { #category : 'rendering' }
-MyWhitePawn >> targetSquaresLegal: aBoolean [
-    | possibleMoves diagLeftSquare diagRightSquare enPassantSquares |
-    
-    possibleMoves := OrderedCollection new.
-    
-    "L'avancement d'une seule ou deux cases"
-    self oneMove ifNotNil: [ possibleMoves add: self oneMove ].
-    self twoMoves ifNotNil: [ possibleMoves add: self twoMoves ].
-    
-    "Capture en diagonale"
-    diagLeftSquare := self checkDiagonalCapture: self diagLeftSquare.
-    diagRightSquare := self checkDiagonalCapture: self diagRightSquare.
-    diagLeftSquare ifNotNil: [ possibleMoves add: diagLeftSquare ].
-    diagRightSquare ifNotNil: [ possibleMoves add: diagRightSquare ].
-    
-    "Capture en passant"
-    enPassantSquares := self enPassantCapture.
-    enPassantSquares ifNotNil: [
-        enPassantSquares isCollection
-            ifTrue: [ possibleMoves addAll: enPassantSquares ]
-            ifFalse: [ possibleMoves add: enPassantSquares ]
-    ].
-    
-    ^ possibleMoves.
-
-]
-
-{ #category : 'rendering' }
 MyWhitePawn >> twoMoves [
     "Renvoie la case en avant de deux cases si le déplacement est valide, sinon nil."
     | upSquare doubleUpSquare |
