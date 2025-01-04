@@ -244,7 +244,7 @@ MyPawn >> targetSquaresLegal: aBoolean [
             ifFalse: [ possibleMoves add: enPassantSquares ]
     ].
     
-    ^ possibleMoves.
+    ^ possibleMoves
 
 ]
 

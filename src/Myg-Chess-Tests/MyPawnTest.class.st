@@ -25,6 +25,102 @@ MyPawnTest >> testAutomaticPawnPromotion [
 ]
 
 { #category : 'tests' }
+MyPawnTest >> testEnPassantCaptureBlackPawn [     
+
+	| pawnWhite pawnBlack board squareFrom enPassantSquareTo|     
+	
+	board := MyChessBoard empty.     
+	board game: MyChessGame freshGame.      	 
+	board at: 'e2' put: (pawnWhite := MyWhitePawn white).     
+	board at: 'd7' put: (pawnBlack := MyBlackPawn black). 
+	      	 
+	board game move: pawnBlack to: pawnBlack square down down. 	 
+	board game move: pawnBlack to: pawnBlack square down. 	 
+	squareFrom := pawnWhite square. 
+	 	 
+	board game move: pawnWhite to: pawnWhite square up up. 	 
+	enPassantSquareTo := pawnWhite square down.  
+		 	 
+	self assert: (pawnBlack enPassantCapture includes: enPassantSquareTo). 
+	 	 
+	board game move: pawnBlack to: enPassantSquareTo.  	 
+	self assert: pawnBlack square equals: enPassantSquareTo. 	 
+	self deny: squareFrom hasPiece.
+]
+
+{ #category : 'tests' }
+MyPawnTest >> testEnPassantCaptureFailsIfNotLastMove [ 
+    | pawnWhite pawnBlack board anotherPiece enPassantSquareTo |
+    board := MyChessBoard empty.
+    board game: MyChessGame freshGame.
+
+    board at: 'e2' put: (pawnWhite := MyWhitePawn new).
+    board at: 'd7' put: (pawnBlack := MyBlackPawn new).
+    board at: 'a1' put: (anotherPiece := MyWhiteRook new).
+
+
+    board game move: pawnWhite to: (board at: 'e4').
+    board game move: pawnWhite to: (board at: 'e5').
+
+    board game move: pawnBlack to: (board at: 'd5').
+
+    "Un autre mouvement est effectué"
+    board game move: anotherPiece to: (board at: 'a2').
+
+    "Capture en passant échoue car le dernier mouvement n'était pas celui du pion noir"
+    enPassantSquareTo := board at: 'd6'. 
+    self deny: (pawnWhite enPassantCapture includes: enPassantSquareTo).
+
+]
+
+{ #category : 'tests' }
+MyPawnTest >> testEnPassantCaptureFailsIfNotTwoSquares [ 
+    | pawnWhite pawnBlack board enPassantSquareTo |
+    board := MyChessBoard empty.
+    board game: MyChessGame freshGame.
+    
+    board at: 'e2' put: (pawnWhite := MyWhitePawn white).
+    "Le pion noir n'est pas à sa position initiale"
+    board at: 'd6' put: (pawnBlack := MyBlackPawn black). 
+
+    board game move: pawnWhite to: pawnWhite square up up.
+    board game move: pawnWhite to: pawnWhite square up.
+    "Le pion noir avance d'une seule case"
+    board game move: pawnBlack to: pawnBlack square down. 
+
+    enPassantSquareTo := pawnBlack square up.
+
+    "La capture en passant n'est pas possible"
+    self deny: (pawnWhite enPassantCapture includes: enPassantSquareTo).
+
+]
+
+{ #category : 'tests' }
+MyPawnTest >> testEnPassantCaptureWhitePawn [ 
+    | pawnWhite pawnBlack board squareFrom enPassantSquareTo|
+    board := MyChessBoard empty.
+    board game: MyChessGame freshGame.
+    
+	 board at: 'e2' put: (pawnWhite := MyWhitePawn white).
+    board at: 'd7' put: (pawnBlack := MyBlackPawn black).
+    
+
+	 board game move: pawnWhite to: pawnWhite square up up.
+	 board game move: pawnWhite to: pawnWhite square up.
+	 squareFrom := pawnWhite square.
+
+	 board game move: pawnBlack to: pawnBlack square down down.
+	 enPassantSquareTo := pawnBlack square up. 
+	
+	 self assert: (pawnWhite enPassantCapture includes: enPassantSquareTo).
+
+	 board game move: pawnWhite to: enPassantSquareTo.
+
+	 self assert: pawnWhite square equals: enPassantSquareTo.
+	 self deny: squareFrom hasPiece. 
+]
+
+{ #category : 'tests' }
 MyPawnTest >> testId [ 
 
 	self assert: MyPawn new id equals: 'P'
@@ -43,12 +139,13 @@ MyPawnTest >> testInitialTwoMoves [
 	 movePawnWhite := pawnWhite targetSquares. 
     movePawnBlack := pawnBlack targetSquares. 
 
+    "Pion blanc"
     self assertCollection: movePawnWhite 
         includesAll: 
             (#( e3 e4) collect: [ :name | 
                 board at: name ]).
 
-
+    "Pion noir"
     self assertCollection: movePawnBlack 
         includesAll: 
             (#( e6 e5) collect: [ :name | 
@@ -157,15 +254,21 @@ MyPawnTest >> testNoPromotionWhenNotPawn [
 ]
 
 { #category : 'tests' }
-MyPawnTest >> testPawnCaptureMove [
-    | pawn capturedPawn board movePawnWhite |
+MyPawnTest >> testPawnCaptureMoveBySameColor [
+    | pawn capturedPawn1 capturedPawn2 board movePawnWhite |
     board := MyChessBoard empty.
     board game: MyChessGame freshGame.
-    board at: 'e4' put: (pawn := MyWhitePawn new).
-    board at: 'd5' put: (capturedPawn := MyBlackPawn new).
+    board at: 'e4' put: (pawn := MyWhitePawn white).
+
+    "capture diagonale gauche"
+    board at: 'd5' put: (capturedPawn1 := MyWhitePawn white).
+    "capture diagonale droite"
+    board at: 'f5' put: (capturedPawn2 := MyWhitePawn white).
 
     movePawnWhite := pawn targetSquares.
 
+
+    "Le pion ne peut pas capturer les pièces de sa propre couleur"
     self assertCollection: movePawnWhite 
         includesAll: 
             (#( e5) collect: [ :name | 
@@ -174,21 +277,24 @@ MyPawnTest >> testPawnCaptureMove [
 ]
 
 { #category : 'tests' }
-MyPawnTest >> testPawnMoveWithOponentObstacle [  
-
-    | pawn squares board |
+MyPawnTest >> testPawnCaptureMoveOponentPiece [
+    | pawn capturedPawn1 capturedPawn2 board movePawnWhite |
     board := MyChessBoard empty.
-	 board game: MyChessGame freshGame.
-    board at: 'e4' put: (pawn := MyWhitePawn new).
+    board game: MyChessGame freshGame.
+    board at: 'e4' put: (pawn := MyWhitePawn white).
 
-    board at: 'e5' put: MyBlackPawn new.
-    squares := pawn targetSquares.
+    "capture diagonale gauche"
+    board at: 'd5' put: (capturedPawn1 := MyBlackPawn black).
+    "capture diagonale droite"
+    board at: 'f5' put: (capturedPawn2 := MyBlackPawn black).
 
-    "le pion ne peut pas avancer vers e5 car la case est occupée par le pion noir"
-    self assertCollection: squares 
+    movePawnWhite := pawn targetSquares.
+
+    self assertCollection: movePawnWhite 
         includesAll: 
-            (#( ) collect: [ :name | 
+            (#( e5 d5 f5) collect: [ :name | 
                 board at: name ]).
+
 ]
 
 { #category : 'tests' }
@@ -203,12 +309,13 @@ MyPawnTest >> testSimpleOneMove [
 	 movePawnWhite := pawnWhite targetSquares. 
     movePawnBlack := pawnBlack targetSquares. 
 
+    "Pion blanc"
     self assertCollection: movePawnWhite 
         includesAll: 
             (#( e5) collect: [ :name | 
-                board at: name ]).
+                board at: name ]). 
 
-
+    "Pion noir"
     self assertCollection: movePawnBlack 
         includesAll: 
             (#( e2) collect: [ :name | 
