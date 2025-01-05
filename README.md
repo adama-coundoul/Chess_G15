@@ -253,7 +253,7 @@ Un problème critique a été rencontré en fin de projet : l’interface graphi
 
 Pour résoudre ce problème :  
 
-Maya a **push** sur le *main* ses modifications et **repull** son code, ce qui a permis de rouvrir le jeu sans problème. Ensuite, pour éviter de compromettre le projet, je n’ai plus poussé mes modifications directement dans le dépôt. J'envoyais mes modifications à Maya, qui se chargeait de tester manuellement mon code à ma place et de pousser les ajustements nécessaires dans le dépôt.
+Maya a **push** sur le *main* ses modifications et **repull** son code, ce qui a permis de rouvrir le jeu sans problème. Ensuite, pour éviter de compromettre le projet, je n’ai plus poussé mes modifications directement dans le dépôt. J'envoyais mes modifications à Maya ainsi ques mes tests, qui se chargeait de tester manuellement mon code à ma place et de pousser les ajustements nécessaires dans le dépôt.
 
 ## Dans quelle mesure votre code est-il testé et comment l’avez-vous fait ?  
 
