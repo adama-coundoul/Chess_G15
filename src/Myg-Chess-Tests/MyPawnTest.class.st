@@ -378,49 +378,6 @@ MyPawnTest >> testPawnCaptureMoveBySameColor [
 ]
 
 { #category : 'tests' }
-MyPawnTest >> testPawnCaptureMoveOponentPiece [
-    | pawnLeft pawnRight capturedPawn1 capturedPawn2 board movePawnLeft movePawnRight|
-    board := MyChessBoard empty.
-    board game: MyChessGame freshGame.
-    board at: 'e4' put: (pawnLeft := MyWhitePawn white).
-    board at: 'f4' put: (pawnRight := MyWhitePawn white).
-
-    "capture diagonale gauche"
-    board at: 'd5' put: (capturedPawn1 := MyBlackPawn black).
-    "capture diagonale droite"
-    board at: 'g5' put: (capturedPawn2 := MyBlackPawn black).
-
-    movePawnLeft := pawnLeft targetSquares.
-    movePawnRight := pawnRight targetSquares.
-
-
-    "CAPTURE GAUCHE : le pion en e4 peut se déplacer en e5 d5"
-    self assertCollection: movePawnLeft 
-        includesAll: 
-            (#( e5 d5) collect: [ :name | 
-                board at: name ]).
-    "si le pion se déplace en diagonale gauche"
-	 board game move: pawnLeft to: pawnLeft square left up. 	 
-    self assert: ((board at: 'd5')contents) equals: pawnLeft.	 
-    self deny: (board at: 'e4') hasPiece.
-
-
-    "CAPTURE DROITE : le pion en f4 peut se déplacer en f5 g5"
-    self assertCollection: movePawnRight 
-        includesAll: 
-            (#( f5 g5) collect: [ :name | 
-                board at: name ]).
-    "si le pion se déplace en diagonale droite"
-	 board game move: pawnRight to: pawnRight square right up. 	 
-    self assert: ((board at: 'g5')contents) equals: pawnRight.	 
-    self deny: (board at: 'f4') hasPiece.
-
-
-    
-
-]
-
-{ #category : 'tests' }
 MyPawnTest >> testPawnCaptureMoveOponentPieceBlack [
     | pawnLeft pawnRight capturedPawn1 capturedPawn2 board movePawnLeft movePawnRight|
     board := MyChessBoard empty.
