@@ -194,6 +194,14 @@ Ces deux comportements ont été séparés dans deux méthodes distinctes (`move
 
 J'ai concentré mes tests principalement sur les deux méthodes centrales de mon implémentation : `moveToAutomaticVersion` et `moveToInteractiveVersion`. Ces deux méthodes sont au cœur de mon code, car elles définissent respectivement le comportement en mode automatique et en mode interactif.  
 
+**Précautions pour les tests de `moveInteractiveVersion`**  
+
+Pour tester correctement la méthode `moveInteractiveVersion`, j'ai utilisé la méthode `compile` pour `showPromotionDialog`. Cela m'a permis de tester le comportement en forçant un rendu spécifique pour simuler le choix de l’utilisateur dans un contexte de test. Cependant, cette approche introduit une contrainte importante :  
+
+- Avant de lancer le jeu, il est impératif de supprimer (`showPromotionDialog`) dans les classes `MyBlackPawn` et `MyWhitePawn` et ne le laissait que dans MyPawn.
+
+Si ces méthodes ne sont pas supprimées, le pion se transformera directement en fonction du dernier test lancé (qui le crée dans les sous classes) sans demander à l'utilisateur de faire un choix via une fenêtre interactive. Cela pourrait fausser les tests manuels et ne pas refléter le comportement réel attendu.
+
 ### Où avez-vous placé les priorités ?
 
 1. **Assurer le bon fonctionnement des deux modes de promotion** (`moveToAutomaticVersion` et `moveToInteractiveVersion`), car ils forment la base de la gestion des promotions.  
@@ -251,16 +259,9 @@ Maya a **push** sur le *main* ses modifications et **repull** son code, ce qui a
 
 ### 1. Tests automatisés  
 
-- **Pour le mode automatique**, des tests rigoureux ont été effectués pour vérifier que la promotion s'effectue correctement, sans intervention de l'utilisateur, en transformant le pion en reine.  
+- **Pour le mode automatique**, des tests ont été effectués pour vérifier que la promotion s'effectue correctement, sans intervention de l'utilisateur, en transformant le pion en reine.  
 - **Pour le mode interactif**, j'ai testé que la pièce sélectionnée remplace correctement le pion sur l'échiquier.
 
-**Précautions pour les tests de `moveInteractiveVersion`**  
-
-Pour tester correctement la méthode `moveInteractiveVersion`, j'ai utilisé la méthode `compile` pour `showPromotionDialog`. Cela m'a permis de tester le comportement en forçant un rendu spécifique pour simuler le choix de l’utilisateur dans un contexte de test. Cependant, cette approche introduit une contrainte importante :  
-
-- Avant de lancer le jeu, il est impératif de supprimer les méthodes créées spécialement pour les tests (`showPromotionDialog`) dans les classes `MyBlackPawn` et `MyWhitePawn`.  
-
-Si ces méthodes ne sont pas supprimées, le pion se transformera directement en `Bishop` ou en `Rook` sans demander à l'utilisateur de faire un choix via une fenêtre interactive. Cela pourrait fausser les tests manuels et ne pas refléter le comportement réel attendu.
 
 ### 2. Tests manuels  
 
