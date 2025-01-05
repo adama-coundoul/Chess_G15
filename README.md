@@ -94,9 +94,9 @@ J’ai également effectué des tests manuels pour vérifier tous les cas partic
 
 Le kata que j'ai réalisé consiste à refactoriser le code afin de retirer les conditions imbriquées dans la méthode de rendu des pièces d'échecs, en utilisant des techniques de refactorisation comme le double dispatch ou la table dispatch.
 
-#### Les difficultés que vous avez rencontrées et comment vous les avez résolues
+### Les difficultés que vous avez rencontrées et comment vous les avez résolues
 
-##### 1. Compréhension du code existant 
+#### 1. Compréhension du code existant 
 
 Le code initial utilisait des conditions imbriquées pour gérer le rendu des pièces en fonction de leur couleur et de celle de la case, ce qui le rendait complexe et difficile à maintenir. Par exemple, pour afficher un cavalier, le jeu utilisait une méthode comme celle-ci :
 
@@ -113,18 +113,18 @@ MyChessSquare >> renderKnight: aPiece
 ```
 Pour cela, j'ai commencé par effectuer des tests avec différentes combinaisons de couleurs de pièces et de cases afin de bien comprendre le comportement de chaque condition. Cela m'a permis d'identifier les parties du code à refactoriser.
 
-#####  2. Transition vers le double dispatch 
+####  2. Transition vers le double dispatch 
 
 J’ai opté pour le double dispatch comme solution de refactorisation. La difficulté principale était comment réorganiser le code pour répartir la responsabilité du rendu entre deux objets : la pièce et la case, tout en supprimant les conditions imbriquées.
 Pour cela, j'ai créé des sous-classes pour chaque type de pièce. J'ai ensuite ajouté la méthode renderPieceOn dans chaque sous-classe, qui prend la case en paramètre. Par exemple, dans MyBlackBishop, la méthode renderPieceOn délègue le rendu de la pièce noire à la méthode renderBlackBishop de la case. De même, dans MyWhiteBishop, elle appelle renderWhiteBishop pour afficher la pièce blanche sur la case.
 
-###### MyBlackBishop :
+##### MyBlackBishop :
 
 ```
 renderPieceOn: aSquare
            	^ aSquare renderBlackBishop
 ```
-###### MyWhiteBishop :
+##### MyWhiteBishop :
 
 ```
 renderPieceOn: aSquare
@@ -132,41 +132,41 @@ renderPieceOn: aSquare
 ```
 J'ai également créé des sous-classes pour la case : MyBlackChessSquare et MyWhiteChessSquare, chacune disposant de méthodes de rendu spécifiques pour chaque type de pièce (renderBlackBishop, renderWhiteBishop, etc). Ces méthodes renvoient les caractères appropriés en fonction de la couleur de la case.
 
-## 3. Adaptation du code existant à la nouvelle structure  
+#### 3. Adaptation du code existant à la nouvelle structure  
 Une autre difficulté a été d'adapter le code existant à la nouvelle structure mise en place avec le double dispatch. Cela a impliqué plusieurs modifications, notamment :
 Modifier les méthodes d'initialisation, telles que initializeSquares dans MyChessBoard et initialize dans MyChessImporters (plus précisément dans MyFenParser), afin d'initialiser les pièces avec la couleur et la classe appropriées.
 Mettre à jour les tests et ajuster les appels de rendu dans l'ensemble du code.
 Remplacer les anciennes méthodes de rendu par les nouvelles.
 
-#### Dans quelle mesure votre code est-il testé et comment l’avez-vous fait. Tests automatisés, tests de mutation, tests manuels ?
+### Dans quelle mesure votre code est-il testé et comment l’avez-vous fait. Tests automatisés, tests de mutation, tests manuels ?
 
-##### Tests automatisés : 
+#### Tests automatisés : 
 
 J’ai créé des tests unitaires dans la classe “MyPieceRenderingTest” pour vérifier que chaque pièce est correctement rendue selon sa couleur et celle de la case. Par exemple, un test automatisé vérifie que MyBlackKnight sur MyWhiteChessSquare affiche bien le caractère 'n'. Ces tests m'ont permis de m'assurer que la refactorisation n'a pas introduit de régressions et que les pièces sont rendues correctement.
 
-##### Tests manuels : 
+#### Tests manuels : 
 
 J’ai exécuté le jeu avec différentes combinaisons de pièces et de cases pour vérifier visuellement que les caractères affichés correspondent aux attentes.
 
-##### Tests de mutation : 
+#### Tests de mutation : 
 
 J'ai réalisé des tests en introduisant des erreurs dans le code pour vérifier que les tests automatisés détectaient bien les problèmes.
 
-#### Décisions de conception 
+### Décisions de conception 
 
-##### Pourquoi le code est-il comme ça ?  
+#### Pourquoi le code est-il comme ça ?  
 
 Le code utilise le double dispatch pour répartir la logique de rendu entre les pièces et les cases. Cela permet de rendre chaque objet responsable de son propre rendu, ce qui simplifie le code et évite les conditions imbriquées. Ce choix a pour but de rendre le code plus modulaire, lisible et maintenable.
 
-##### Pourquoi cette partie du code est-elle plus testée que l’autre ? 
+#### Pourquoi cette partie du code est-elle plus testée que l’autre ? 
 
 J'ai focalisé mes tests sur la partie du code relatif au rendu des pièces, car cette partie est essentielle pour assurer la validité du jeu. Un rendu correct est nécessaire au bon fonctionnement du jeu.
 
-##### Où avez-vous placé les priorités ? 
+#### Où avez-vous placé les priorités ? 
 
 Les priorités ont été mises sur la simplicité et la clarté du code. L'objectif était de nettoyer la logique de rendu avec les conditions imbriquées et de rendre le code plus extensible et lisible.
 
-##### Où avez-vous utilisé (ou non) des modèles de conception dans le code et pourquoi ? 
+#### Où avez-vous utilisé (ou non) des modèles de conception dans le code et pourquoi ? 
 
 J'ai utilisé comme modèle de conception le Double Dispatch pour séparer les responsabilités entre la pièce et la case. J'ai choisi de ne pas utiliser d'autres modèles de conception, car le double dispatch répondait parfaitement aux besoins du kata.
 
