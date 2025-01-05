@@ -48,19 +48,19 @@ Le kata que j'ai réalisé consiste à "Corriger les mouvements des pions” dan
 
 Voici les principales tâches abordées :
 
-####1. Correction du mouvement des pions : 
+#### 1. Correction du mouvement des pions : 
 Le mouvement simple d’une ou deux cases s’il est encore sur sa rangée de départ en vérifiant que les cases devant sont libres.
 
-####2. Gestion du mouvement de capture en diagonale : 
+#### 2. Gestion du mouvement de capture en diagonale : 
 Les pions peuvent capturer uniquement en avançant d'une case en diagonale sur une pièce ennemie. J'ai corrigé les erreurs qui permettaient de capturer les pièces de même couleur.
 
-####3. Implémentation du mouvement spécial "En passant" (capture en passant) : 
+#### 3. Implémentation du mouvement spécial "En passant" (capture en passant) : 
  en respectant toutes ses conditions : 
    - Le pion adverse doit avoir avancé de deux cases dans son dernier mouvement.
    - Le pion qui capture doit se trouver sur une colonne adjacente à celle du pion adverse. 
    - La capture doit être effectuée immédiatement après ce mouvement de deux cases.
 
-####4.  Décisions de conception : 
+#### 4.  Décisions de conception : 
 Je me suis appuyé sur le kata de Youssra (double dispatch), qui a créé deux classes distinctes, MyBlackPawn et MyWhitePawn, ce qui m’a permis de structurer mon code de manière séparée et d’éviter à chaque fois de vérifier si le pion était blanc ou noir.
 
 ### Les difficultés que vous avez rencontrées et comment vous les avez résolues
@@ -79,9 +79,13 @@ En complément, j'ai ajouté dans la classe **Game** une méthode nommée `recor
 
 ### Dans quelle mesure votre code est-il testé et comment l’avez-vous fait.
 
-####Tests automatisés : J’ai créé des tests unitaires pour vérifier le bon fonctionnement de chaque comportement des pions (déplacement simple d’une case ou de deux cases, capture en diagonale, mouvement en passant) dans la classe **MyPawnTest**, et des tests pour vérifier le bon enregistrement des mouvements dans la classe **MyMoveTest**. Ces tests ont permis de s’assurer que les règles étaient respectées et de détecter rapidement les erreurs.
+#### Tests automatisés : 
 
-####Tests manuels :  J’ai également effectué des tests manuels pour vérifier tous les cas particuliers et m’assurer que les comportements étaient conformes à ce qui était attendu.
+J’ai créé des tests unitaires pour vérifier le bon fonctionnement de chaque comportement des pions (déplacement simple d’une case ou de deux cases, capture en diagonale, mouvement en passant) dans la classe **MyPawnTest**, et des tests pour vérifier le bon enregistrement des mouvements dans la classe **MyMoveTest**. Ces tests ont permis de s’assurer que les règles étaient respectées et de détecter rapidement les erreurs.
+
+#### Tests manuels :  
+
+J’ai également effectué des tests manuels pour vérifier tous les cas particuliers et m’assurer que les comportements étaient conformes à ce qui était attendu.
 
 
 ## Youssra DAHOUANE
