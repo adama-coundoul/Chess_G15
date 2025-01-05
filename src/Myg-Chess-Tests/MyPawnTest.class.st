@@ -127,29 +127,50 @@ MyPawnTest >> testId [
 ]
 
 { #category : 'tests' }
-MyPawnTest >> testInitialTwoMoves [
+MyPawnTest >> testInitialTwoMovesPawnBlack [
  
-    | pawnWhite movePawnWhite pawnBlack movePawnBlack board |  
+    | pawnBlack movePawnWBlack board |  
+    board := MyChessBoard empty. 
+    board game: MyChessGame freshGame.
+
+    board at: 'e7' put: (pawnBlack := MyBlackPawn black).  
+    
+	 movePawnWBlack := pawnBlack targetSquares. 
+ 
+
+    self assertCollection: movePawnWBlack 
+        includesAll: 
+            (#( e6 e5) collect: [ :name | 
+                board at: name ]).
+
+
+	board game move: pawnBlack to: pawnBlack square down down . 	 
+   self assert: ((board at: 'e5')contents) equals: pawnBlack.	 
+   self deny: (board at: 'e7') hasPiece.
+
+]
+
+{ #category : 'tests' }
+MyPawnTest >> testInitialTwoMovesPawnWhite [
+ 
+    | pawnWhite movePawnWhite board |  
     board := MyChessBoard empty. 
     board game: MyChessGame freshGame.
 
     board at: 'e2' put: (pawnWhite := MyWhitePawn new).  
-    board at: 'e7' put: (pawnBlack := MyBlackPawn new). 
     
 	 movePawnWhite := pawnWhite targetSquares. 
-    movePawnBlack := pawnBlack targetSquares. 
+ 
 
-    "Pion blanc"
     self assertCollection: movePawnWhite 
         includesAll: 
             (#( e3 e4) collect: [ :name | 
                 board at: name ]).
 
-    "Pion noir"
-    self assertCollection: movePawnBlack 
-        includesAll: 
-            (#( e6 e5) collect: [ :name | 
-                board at: name ]).
+
+	board game move: pawnWhite to: pawnWhite square up up . 	 
+   self assert: ((board at: 'e4')contents) equals: pawnWhite.	 
+   self deny: (board at: 'e2') hasPiece.
 
 ]
 
