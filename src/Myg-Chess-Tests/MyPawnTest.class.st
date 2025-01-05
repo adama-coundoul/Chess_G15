@@ -154,7 +154,7 @@ MyPawnTest >> testInitialTwoMoves [
 ]
 
 { #category : 'tests' }
-MyPawnTest >> testInteractivePawnPromotion [
+MyPawnTest >> testInteractivePawnPromotioWhenUserChooseBishop [
    | pawnWhite pawnBlack board |
     
    
@@ -167,8 +167,108 @@ MyPawnTest >> testInteractivePawnPromotion [
     self assert: ((board at:'d7') contents) equals: pawnWhite .
     self assert: ((board at:'c2') contents) equals: pawnBlack .
     
-  
+    "3 représente l'index du bishop dans la liste des options de promotion dans la méthode showPromotionDialog."
     pawnWhite class compile: 'showPromotionDialog ^ 3'.
+    pawnBlack class compile: 'showPromotionDialog ^ 3'.
+    
+   
+    pawnWhite moveToInteractiveVersion: (board at: 'd8').
+    pawnBlack moveToInteractiveVersion: (board at: 'c1').
+    
+    self assert: ((board at: 'd7') contents isNil ).
+    self deny: ((board at:'d8') contents) equals: pawnWhite .
+
+    
+    self assert: ((board at: 'c2') contents isNil ).
+    self deny: ((board at:'c1') contents) equals: pawnBlack .
+
+    self assert: (((board at:'d8') contents) class) equals: MyWhiteBishop .
+	 self assert: (((board at:'c1') contents) class) equals: MyBlackBishop .
+    
+]
+
+{ #category : 'tests' }
+MyPawnTest >> testInteractivePawnPromotioWhenUserChooseKnight [
+   | pawnWhite pawnBlack board |
+    
+   
+    board := MyChessBoard empty.
+    pawnWhite := MyWhitePawn new.
+    pawnBlack := MyBlackPawn new.
+    board game: MyChessGame freshGame.
+    board at: 'd7' put: pawnWhite.
+    board at: 'c2' put: pawnBlack .
+    self assert: ((board at:'d7') contents) equals: pawnWhite .
+    self assert: ((board at:'c2') contents) equals: pawnBlack .
+    
+    "4 représente l'index du Knight dans la liste des options de promotion dans la méthode showPromotionDialog."
+    pawnWhite class compile: 'showPromotionDialog ^ 4'.
+    pawnBlack class compile: 'showPromotionDialog ^ 4'.
+
+   
+    pawnWhite moveToInteractiveVersion: (board at: 'd8').
+    pawnBlack moveToInteractiveVersion: (board at: 'c1').
+    
+    self assert: ((board at: 'd7') contents isNil ).
+    self deny: ((board at:'d8') contents) equals: pawnWhite .
+
+    
+    self assert: ((board at: 'c2') contents isNil ).
+    self deny: ((board at:'c1') contents) equals: pawnBlack .
+
+    self assert: (((board at:'d8') contents) class) equals: MyWhiteKnight .
+	 self assert: (((board at:'c1') contents) class) equals: MyBlackKnight .
+]
+
+{ #category : 'tests' }
+MyPawnTest >> testInteractivePawnPromotioWhenUserChooseQueen [
+   | pawnWhite pawnBlack board |
+    
+   
+    board := MyChessBoard empty.
+    pawnWhite := MyWhitePawn new.
+    pawnBlack := MyBlackPawn new.
+    board game: MyChessGame freshGame.
+    board at: 'd7' put: pawnWhite.
+    board at: 'c2' put: pawnBlack .
+    self assert: ((board at:'d7') contents) equals: pawnWhite .
+    self assert: ((board at:'c2') contents) equals: pawnBlack .
+    
+    "1 représente l'index de la reine dans la liste des options de promotion dans la méthode showPromotionDialog."
+    pawnWhite class compile: 'showPromotionDialog ^ 1'.
+    pawnBlack class compile: 'showPromotionDialog ^ 1'.
+
+   
+    pawnWhite moveToInteractiveVersion: (board at: 'd8').
+    pawnBlack moveToInteractiveVersion: (board at: 'c1').
+    
+    self assert: ((board at: 'd7') contents isNil ).
+    self deny: ((board at:'d8') contents) equals: pawnWhite .
+
+    
+    self assert: ((board at: 'c2') contents isNil ).
+    self deny: ((board at:'c1') contents) equals: pawnBlack .
+
+    self assert: (((board at:'d8') contents) class) equals: MyWhiteQueen .
+	 self assert: (((board at:'c1') contents) class) equals: MyBlackQueen .
+]
+
+{ #category : 'tests' }
+MyPawnTest >> testInteractivePawnPromotioWhenUserChooseRook [
+   | pawnWhite pawnBlack board |
+    
+   
+    board := MyChessBoard empty.
+    pawnWhite := MyWhitePawn new.
+    pawnBlack := MyBlackPawn new.
+    board game: MyChessGame freshGame.
+    board at: 'd7' put: pawnWhite.
+    board at: 'c2' put: pawnBlack .
+    self assert: ((board at:'d7') contents) equals: pawnWhite .
+    self assert: ((board at:'c2') contents) equals: pawnBlack .
+    
+    "2 représente l'index du rook dans la liste des options de promotion dans la méthode showPromotionDialog."
+    pawnWhite class compile: 'showPromotionDialog ^ 2'.
     pawnBlack class compile: 'showPromotionDialog ^ 2'.
 
    
@@ -182,8 +282,9 @@ MyPawnTest >> testInteractivePawnPromotion [
     self assert: ((board at: 'c2') contents isNil ).
     self deny: ((board at:'c1') contents) equals: pawnBlack .
 
-    self assert: (((board at:'d8') contents) class) equals: MyWhiteBishop.
+    self assert: (((board at:'d8') contents) class) equals: MyWhiteRook .
 	 self assert: (((board at:'c1') contents) class) equals: MyBlackRook .
+    
 ]
 
 { #category : 'tests' }
@@ -295,6 +396,62 @@ MyPawnTest >> testPawnCaptureMoveOponentPiece [
             (#( e5 d5 f5) collect: [ :name | 
                 board at: name ]).
 
+]
+
+{ #category : 'tests' }
+MyPawnTest >> testPromoteToBishop [ 
+
+|pawnWhite pawnBlack piece1 piece2 |
+pawnWhite := MyWhitePawn new.
+pawnBlack := MyBlackPawn new.
+
+piece1:= pawnWhite promoteToBishop .
+piece2:= pawnBlack promoteToBishop .
+
+self assert: piece1 class equals: MyWhiteBishop .
+self assert: piece2 class equals: MyBlackBishop .
+]
+
+{ #category : 'tests' }
+MyPawnTest >> testPromoteToKnight [
+
+|pawnWhite pawnBlack piece1 piece2 |
+pawnWhite := MyWhitePawn new.
+pawnBlack := MyBlackPawn new.
+
+piece1:= pawnWhite promoteToKnight .
+piece2:= pawnBlack promoteToKnight .
+
+self assert: piece1 class equals: MyWhiteKnight .
+self assert: piece2 class equals: MyBlackKnight .
+]
+
+{ #category : 'tests' }
+MyPawnTest >> testPromoteToQueen [
+
+|pawnWhite pawnBlack piece1 piece2 |
+pawnWhite := MyWhitePawn new.
+pawnBlack := MyBlackPawn new.
+
+piece1:= pawnWhite promoteToQueen .
+piece2:= pawnBlack promoteToQueen .
+
+self assert: piece1 class equals: MyWhiteQueen .
+self assert: piece2 class equals: MyBlackQueen 
+]
+
+{ #category : 'tests' }
+MyPawnTest >> testPromoteToRook [
+
+|pawnWhite pawnBlack piece1 piece2 |
+pawnWhite := MyWhitePawn new.
+pawnBlack := MyBlackPawn new.
+
+piece1:= pawnWhite promoteToRook .
+piece2:= pawnBlack promoteToRook .
+
+self assert: piece1 class equals: MyWhiteRook .
+self assert: piece2 class equals: MyBlackRook .
 ]
 
 { #category : 'tests' }
